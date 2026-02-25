@@ -45,3 +45,22 @@ Thumbs.db
 *.iml
 .vscode/
 .gradle/
+# Solidity
+/.compiler-config.json
+/coverage.json
+/gas-report.txt
+/gas-report.json
+packages/contracts/cache/
+packages/contracts/artifacts/
+
+# Testing
+.nyc_output/
+*.lcov
+
+# Docs
+packages/docs/.vitepress/dist/
+packages/docs/.vitepress/cache/
+
+# pnpm
+.pnpm-debug.log
+pnpm-lock.yaml
