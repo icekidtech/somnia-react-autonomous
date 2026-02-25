@@ -64,7 +64,7 @@ abstract contract BaseReactiveHandler is IReactiveEvents {
      * @param data Additional event data
      */
     function _emitSuccess(string memory action, bytes memory data) internal {
-        emit HandleSuccess(action, data);
+        emit ReactiveSuccess(action);
     }
 
     /**
@@ -73,6 +73,6 @@ abstract contract BaseReactiveHandler is IReactiveEvents {
      * @param errorData Additional error data
      */
     function _emitError(string memory reason, bytes memory errorData) internal {
-        emit HandleError(reason, errorData);
+        emit ReactiveError(errorData);
     }
 }

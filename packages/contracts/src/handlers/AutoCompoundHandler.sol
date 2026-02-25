@@ -3,25 +3,26 @@ pragma solidity ^0.8.20;
 
 import "../base/BaseReactiveHandler.sol";
 
+// ============================================================================
+// INTERFACES
+// ============================================================================
+
+interface IERC20 {
+    function approve(address spender, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address to, uint256 amount) external returns (bool);
+}
+
+interface ICompoundable {
+    function compound() external returns (uint256);
+}
+
 /**
  * @title AutoCompoundHandler
  * @notice Automatically compounds rewards when detected
  * @dev Listens for reward token transfers and triggers compound operations
  */
 contract AutoCompoundHandler is BaseReactiveHandler {
-    // ============================================================================
-    // INTERFACES
-    // ============================================================================
-
-    interface IERC20 {
-        function approve(address spender, uint256 amount) external returns (bool);
-        function balanceOf(address account) external view returns (uint256);
-        function transfer(address to, uint256 amount) external returns (bool);
-    }
-
-    interface ICompoundable {
-        function compound() external returns (uint256);
-    }
 
     // ============================================================================
     // STATE

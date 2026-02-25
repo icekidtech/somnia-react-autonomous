@@ -3,42 +3,42 @@ pragma solidity ^0.8.20;
 
 import "../base/BaseReactiveHandler.sol";
 
+// ============================================================================
+// INTERFACES
+// ============================================================================
+
+interface IPriceOracle {
+    function getPrice(address token) external view returns (uint256);
+}
+
+interface ILendingPool {
+    function getUserAccountData(address user)
+        external
+        view
+        returns (
+            uint256 totalCollateralBase,
+            uint256 totalDebtBase,
+            uint256 availableBorrowsBase,
+            uint256 currentLiquidationThreshold,
+            uint256 ltv,
+            uint256 healthFactor
+        );
+    
+    function liquidationCall(
+        address collateralAsset,
+        address debtAsset,
+        address user,
+        uint256 debtToCover,
+        bool receiveAToken
+    ) external;
+}
+
 /**
  * @title LiquidationGuardian
  * @notice Monitors health factor and triggers liquidations when necessary
  * @dev Listens for price updates and checks if positions should be liquidated
  */
 contract LiquidationGuardian is BaseReactiveHandler {
-    // ============================================================================
-    // INTERFACES
-    // ============================================================================
-
-    interface IPriceOracle {
-        function getPrice(address token) external view returns (uint256);
-    }
-
-    interface ILendingPool {
-        function getUserAccountData(address user)
-            external
-            view
-            returns (
-                uint256 totalCollateralBase,
-                uint256 totalDebtBase,
-                uint256 availableBorrowsBase,
-                uint256 currentLiquidationThreshold,
-                uint256 ltv,
-                uint256 healthFactor
-            );
-        
-        function liquidationCall(
-            address collateralAsset,
-            address debtAsset,
-            address user,
-            uint256 debtToCover,
-            bool receiveAToken
-        ) external;
-    }
-
     // ============================================================================
     // STATE
     // ============================================================================
