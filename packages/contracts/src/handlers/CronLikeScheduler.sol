@@ -91,7 +91,7 @@ contract CronLikeScheduler is BaseReactiveHandler {
      */
     function _onEvent(bytes memory eventData) internal override nonReentrant {
         if (!isActive) {
-            _emitError("scheduler_inactive", abi.encode(false));
+            _emitError(abi.encode("scheduler_inactive"));
             return;
         }
 
@@ -101,8 +101,7 @@ contract CronLikeScheduler is BaseReactiveHandler {
             uint256 timeRemaining = executionInterval - timeSinceLastExecution;
             emit ReactiveExecution("execution_not_due", false);
             _emitError(
-                "execution_not_ready",
-                abi.encode(timeSinceLastExecution, timeRemaining)
+                abi.encode("execution_not_ready", timeSinceLastExecution, timeRemaining)
             );
             return;
         }

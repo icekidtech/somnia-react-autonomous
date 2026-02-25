@@ -210,7 +210,7 @@ contract UpgradeableReactiveProxy is BaseReactiveHandler {
         try this._delegateToImpl(implementation, eventData) {
             _emitSuccess("event_delegated");
         } catch (bytes memory reason) {
-            _emitError("delegation_failed", reason);
+            _emitError(reason);
         }
     }
 

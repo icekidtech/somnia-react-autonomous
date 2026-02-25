@@ -108,7 +108,7 @@ contract EventFilterThrottle is BaseReactiveHandler {
         // Check if we exceeded threshold
         if (eventCount > maxEventsPerWindow) {
             emit ThrottleTriggered(eventCount, maxEventsPerWindow);
-            _emitError("throttle_limit_exceeded", abi.encode(eventCount, maxEventsPerWindow));
+            _emitError(abi.encode("throttle_limit_exceeded", eventCount, maxEventsPerWindow));
             return;
         }
 

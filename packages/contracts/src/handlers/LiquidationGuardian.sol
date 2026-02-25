@@ -146,15 +146,15 @@ contract LiquidationGuardian is BaseReactiveHandler {
      * @param eventData Event data from Somnia reactive network
      */
     function _onEvent(bytes memory eventData) internal override nonReentrant gasLimitCheck(100000) {
-        // Extract user address from event data (first 32 bytes after selector)
+        // Extract user address from event data (first 32 bytes)
         if (eventData.length < 32) {
-            _emitError("invalid_event_data", eventData);
+            _emitError(eventData);
             return;
         }
 
         address user;
         assembly {
-            user := calldataload(add(eventData.offset, 32))
+            user := calldataload(add(eventData, 32))
         }
 
         try ILendingPool(lendingPool).getUserAccountData(user) returns (
@@ -176,7 +176,7 @@ contract LiquidationGuardian is BaseReactiveHandler {
                 _emitSuccess("position_healthy");
             }
         } catch (bytes memory reason) {
-            _emitError("health_check_failed", reason);
+            _emitError(reason);
             emit ReactiveExecution("health_check_failed", false);
         }
     }
@@ -195,7 +195,7 @@ contract LiquidationGuardian is BaseReactiveHandler {
         } catch (bytes memory reason) {
             liquidationsFailed++;
             emit ReactiveExecution("liquidation_failed", false);
-            _emitError("liquidation_failed", reason);
+            _emitError(reason);
         }
     }
 

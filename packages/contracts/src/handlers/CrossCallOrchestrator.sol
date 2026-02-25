@@ -146,12 +146,11 @@ contract CrossCallOrchestrator is BaseReactiveHandler {
         } else if (executed > 0) {
             emit ReactiveExecution("partial_execution", true);
             _emitError(
-                "partial_execution",
-                abi.encode(executed, failed)
+                abi.encode("partial_execution", executed, failed)
             );
         } else {
             emit ReactiveExecution("all_calls_failed", false);
-            _emitError("all_calls_failed", abi.encode(failed));
+            _emitError(abi.encode("all_calls_failed", failed));
         }
     }
 

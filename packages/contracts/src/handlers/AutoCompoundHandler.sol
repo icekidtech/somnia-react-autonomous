@@ -113,11 +113,11 @@ contract AutoCompoundHandler is BaseReactiveHandler {
                 emit CompoundTriggered(balance, compoundsExecuted);
                 _emitSuccess("compound_executed");
             } else {
-                _emitError("compound_failed", abi.encode(balance));
+                _emitError(abi.encode("compound_failed", balance));
             }
         } else {
             emit ReactiveExecution("insufficient_balance", false);
-            _emitError("insufficient_balance", abi.encode(balance, minCompoundAmount));
+            _emitError(abi.encode("insufficient_balance", balance, minCompoundAmount));
         }
     }
 
@@ -134,12 +134,12 @@ contract AutoCompoundHandler is BaseReactiveHandler {
                 return true;
             } catch (bytes memory reason) {
                 emit ReactiveExecution("compound_call_failed", false);
-                _emitError("compound_call_failed", reason);
+                _emitError(reason);
                 return false;
             }
         } catch (bytes memory reason) {
             emit ReactiveExecution("approve_failed", false);
-            _emitError("approve_failed", reason);
+            _emitError(reason);
             return false;
         }
     }
