@@ -12,27 +12,46 @@ import "../interfaces/IReactiveEvents.sol";
  * - Gas limit checks
  * - Event emission for success/error
  * - Common event decoding helpers
+ * - Owner-based access control
  *
  * Note: This should inherit from SomniaEventHandler for production use.
  * For now, we provide the base interface here.
  */
 abstract contract BaseReactiveHandler is IReactiveEvents {
-    /// @notice Reentrancy guard state
-    uint256 private locked;
+    // ============================================================================
+    // CONSTANTS
+    // ============================================================================
 
     /// @notice Minimum gas required for safe execution
     uint256 public constant MIN_GAS_REQUIRED = 5000;
 
-    /// @notice Error message for reentrancy attempts
+    // ============================================================================
+    // STATE
+    // ============================================================================
+
+    /// @notice Reentrancy guard state
+    uint256 private locked = 1;
+
+    /// @notice Contract owner
+    address public owner;
+
+    // ============================================================================
+    // EVENTS
+    // ============================================================================
+
+    event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
+
+    // ============================================================================
+    // ERRORS
+    // ============================================================================
+
     error ReentrancyGuardReentrantCall();
-
-    /// @notice Error message for insufficient gas
     error InsufficientGas();
+    error Unauthorized();
 
-    /// @dev Constructor
-    constructor() {
-        locked = 1;
-    }
+    // ============================================================================
+    // MODIFIERS
+    // ============================================================================
 
     /**
      * @dev Reentrancy guard modifier
@@ -54,25 +73,60 @@ abstract contract BaseReactiveHandler is IReactiveEvents {
     }
 
     /**
-     * @dev Override _onEvent for specific handler logic
+     * @dev Only owner can call
      */
-    function _onEvent(bytes memory eventData) internal virtual override;
+    modifier onlyOwner() {
+        if (msg.sender != owner) revert Unauthorized();
+        _;
+    }
+
+    // ============================================================================
+    // CONSTRUCTOR
+    // ============================================================================
+
+    constructor() {
+        owner = msg.sender;
+        emit OwnershipTransferred(address(0), msg.sender);
+    }
+
+    // ============================================================================
+    // EXTERNAL FUNCTIONS
+    // ============================================================================
 
     /**
-     * @dev Emit success event
-     * @param action Description of successful action
-     * @param data Additional event data
+     * @notice Transfer ownership to a new address
+     * @param newOwner The new owner address
      */
-    function _emitSuccess(string memory action, bytes memory data) internal {
+    function transferOwnership(address newOwner) external onlyOwner {
+        require(newOwner != address(0), "Invalid owner");
+        address previousOwner = owner;
+        owner = newOwner;
+        emit OwnershipTransferred(previousOwner, newOwner);
+    }
+
+    // ============================================================================
+    // INTERNAL FUNCTIONS (TO BE OVERRIDDEN)
+    // ============================================================================
+
+    /**
+     * @notice Core event handling logic - must be implemented by subclasses
+     * @param eventData Event data
+     */
+    function _onEvent(bytes memory eventData) internal virtual;
+
+    /**
+     * @notice Emit success with action description
+     * @param action Action description
+     */
+    function _emitSuccess(string memory action) internal {
         emit ReactiveSuccess(action);
     }
 
     /**
-     * @dev Emit error event
-     * @param reason Error reason description
-     * @param errorData Additional error data
+     * @notice Emit error with reason
+     * @param reason Error reason
      */
-    function _emitError(string memory reason, bytes memory errorData) internal {
-        emit ReactiveError(errorData);
+    function _emitError(bytes memory reason) internal {
+        emit ReactiveError(reason);
     }
 }
