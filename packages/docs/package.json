@@ -1,0 +1,15 @@
+{
+  "name": "@somnia-react/autonomous-docs",
+  "version": "0.1.0",
+  "description": "Documentation site for Somnia reactive handlers",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vitepress dev .",
+    "build": "vitepress build .",
+    "preview": "vitepress preview ."
+  },
+  "devDependencies": {
+    "vitepress": "^1.0.1",
+    "vue": "^3.3.4"
+  }
+}
