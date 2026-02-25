@@ -1,45 +1,66 @@
-# @somnia-react/autonomous-contracts
+## Foundry
 
-Solidity smart contracts for Somnia on-chain reactive logic.
+**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-## Install
+Foundry consists of:
 
-```bash
-npm install @somnia-react/autonomous-contracts
-```
-
-## Build
-
-```bash
-pnpm build
-```
-
-## Test
-
-```bash
-# Foundry (primary)
-pnpm test
-
-# With coverage
-pnpm test:coverage
-
-# With fuzzing
-pnpm test:fuzz
-
-# Hardhat (integration)
-pnpm test:hardhat
-```
-
-## Contracts
-
-- `BaseReactiveHandler` – Foundation with safety features
-- `AutoCompoundHandler` – Auto-compound rewards
-- `LiquidationGuardian` – Monitor & liquidate
-- `CronLikeScheduler` – Time-based triggers
-- `EventFilterThrottle` – Event debouncing
-- `CrossCallOrchestrator` – Atomic multi-calls
-- `UpgradeableReactiveProxy` – UUPS upgradeable base
+- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
+- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
+- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
+- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
 
 ## Documentation
 
-See [../../README.md](../../README.md) for full documentation.
+https://book.getfoundry.sh/
+
+## Usage
+
+### Build
+
+```shell
+$ forge build
+```
+
+### Test
+
+```shell
+$ forge test
+```
+
+### Format
+
+```shell
+$ forge fmt
+```
+
+### Gas Snapshots
+
+```shell
+$ forge snapshot
+```
+
+### Anvil
+
+```shell
+$ anvil
+```
+
+### Deploy
+
+```shell
+$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+```
+
+### Cast
+
+```shell
+$ cast <subcommand>
+```
+
+### Help
+
+```shell
+$ forge --help
+$ anvil --help
+$ cast --help
+```

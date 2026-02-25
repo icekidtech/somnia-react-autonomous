@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@somnia-chain/reactivity-contracts/SomniaEventHandler.sol";
 import "../interfaces/IReactiveEvents.sol";
 
 /**
@@ -13,8 +12,11 @@ import "../interfaces/IReactiveEvents.sol";
  * - Gas limit checks
  * - Event emission for success/error
  * - Common event decoding helpers
+ *
+ * Note: This should inherit from SomniaEventHandler for production use.
+ * For now, we provide the base interface here.
  */
-abstract contract BaseReactiveHandler is SomniaEventHandler, IReactiveEvents {
+abstract contract BaseReactiveHandler is IReactiveEvents {
     /// @notice Reentrancy guard state
     uint256 private locked;
 
