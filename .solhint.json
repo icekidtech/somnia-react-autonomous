@@ -1,0 +1,15 @@
+{
+  "extends": "solhint:recommended",
+  "rules": {
+    "code-complexity": ["error", 7],
+    "function-max-lines": ["error", 50],
+    "no-console": "off",
+    "no-empty-blocks": "error",
+    "no-unused-vars": "warn",
+    "not-rely-on-block-hash": "error",
+    "not-rely-on-time": "warn",
+    "reentrancy": "error",
+    "mark-callable-contracts": "error",
+    "state-visibility": "error"
+  }
+}

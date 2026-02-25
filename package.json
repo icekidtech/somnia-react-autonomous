@@ -1,0 +1,52 @@
+{
+  "name": "@somnia-react/autonomous",
+  "version": "0.1.0",
+  "description": "Battle-tested library of Solidity contracts and TypeScript helpers for Somnia on-chain reactive logic",
+  "license": "MIT",
+  "author": "Icekidtech",
+  "homepage": "https://github.com/icekidtech/somnia-react/autonomous",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/icekidtech/somnia-react/autonomous.git"
+  },
+  "bugs": {
+    "url": "https://github.com/icekidtech/somnia-react/autonomous/issues"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "scripts": {
+    "lint": "pnpm --recursive lint",
+    "lint:sol": "solhint 'packages/contracts/src/**/*.sol'",
+    "lint:ts": "eslint packages/sdk/src --ext .ts,.tsx",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "pnpm --recursive test",
+    "test:contracts": "pnpm --filter contracts test",
+    "test:sdk": "pnpm --filter sdk test",
+    "coverage": "pnpm --recursive coverage",
+    "build": "pnpm --recursive build",
+    "build:watch": "pnpm --recursive build:watch",
+    "docs:dev": "pnpm --filter docs dev",
+    "docs:build": "pnpm --filter docs build",
+    "docs:preview": "pnpm --filter docs preview",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "eslint": "^8.56.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-solidity": "^1.3.1",
+    "solhint": "^4.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "typescript": "^5.3.3"
+    }
+  }
+}
