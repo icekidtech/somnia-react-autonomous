@@ -1,0 +1,54 @@
+{
+  "name": "@somnia-react/autonomous-sdk",
+  "version": "0.1.0",
+  "description": "TypeScript SDK for deploying and managing Somnia reactive handlers",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./deployment": {
+      "import": "./dist/deployment/index.js",
+      "types": "./dist/deployment/index.d.ts"
+    },
+    "./subscriptions": {
+      "import": "./dist/subscriptions/index.js",
+      "types": "./dist/subscriptions/index.d.ts"
+    },
+    "./decoders": {
+      "import": "./dist/decoders/index.js",
+      "types": "./dist/decoders/index.d.ts"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "build:watch": "tsup --watch",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write 'src/**/*.ts'",
+    "format:check": "prettier --check 'src/**/*.ts'",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.17.0",
+    "@typescript-eslint/parser": "^6.17.0",
+    "@vitest/coverage-v8": "^1.1.0",
+    "abitype": "^1.0.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.1.1",
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0"
+  },
+  "peerDependencies": {
+    "@somnia-react/autonomous-contracts": "^0.1.0"
+  }
+}

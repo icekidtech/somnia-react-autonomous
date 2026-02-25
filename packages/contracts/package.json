@@ -1,0 +1,39 @@
+{
+  "name": "@somnia-react/autonomous-contracts",
+  "version": "0.1.0",
+  "description": "Solidity smart contracts for Somnia on-chain reactive logic",
+  "license": "MIT",
+  "files": ["src/**/*.sol", "artifacts/**/*.json"],
+  "scripts": {
+    "build": "foundry build && hardhat compile",
+    "test": "foundry test --via-ir",
+    "test:coverage": "foundry coverage --via-ir --report lcov",
+    "test:fuzz": "foundry test --fuzz-runs 10000 --via-ir",
+    "test:hardhat": "hardhat test",
+    "lint": "solhint 'src/**/*.sol'",
+    "format": "prettier --write 'src/**/*.sol'",
+    "format:check": "prettier --check 'src/**/*.sol'",
+    "gas-report": "REPORT_GAS=true hardhat test"
+  },
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.0.0",
+    "@openzeppelin/hardhat-upgrades": "^2.0.0",
+    "ethers": "^6.9.0",
+    "forge-std": "npm:@forge-std/forge-std@1.7.6",
+    "foundry-rs": "^0.0.1",
+    "hardhat": "^2.20.0",
+    "hardhat-gas-reporter": "^1.0.10",
+    "prettier": "^3.1.1",
+    "prettier-plugin-solidity": "^1.3.1",
+    "solhint": "^4.0.0",
+    "solidity-coverage": "^0.8.5"
+  },
+  "peerDependencies": {
+    "@somnia-chain/reactivity-contracts": "^0.x.x"
+  },
+  "peerDependenciesMeta": {
+    "@somnia-chain/reactivity-contracts": {
+      "optional": false
+    }
+  }
+}
