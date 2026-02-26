@@ -21,9 +21,9 @@ export function isValidAddress(address: string): boolean {
  * @returns True if valid
  */
 export function isValidEventSignature(signature: string): boolean {
-  // Check format: EventName(type1,type2,...) 
-  // Supports tuples like (uint256,bool) and arrays like uint256[]
-  return /^[A-Za-z_][A-Za-z0-9_]*\([a-zA-Z0-9_\s,[\]()]+\)$/.test(signature);
+  // Check format: EventName(type1,type2,...) or EventName()
+  // Supports tuples like (uint256,bool), arrays like uint256[], and indexed keyword
+  return /^[A-Za-z_][A-Za-z0-9_]*\((indexed\s+)?([a-zA-Z0-9_\s,[\]()]*)\)$/.test(signature);
 }
 
 /**
