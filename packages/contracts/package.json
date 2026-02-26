@@ -5,7 +5,7 @@
   "license": "MIT",
   "files": ["src/**/*.sol", "artifacts/**/*.json"],
   "scripts": {
-    "build": "foundry build && hardhat compile",
+    "build": "foundry build && hardhat compile && echo 'Build complete'",
     "test": "foundry test --via-ir",
     "test:coverage": "foundry coverage --via-ir --report lcov",
     "test:fuzz": "foundry test --fuzz-runs 10000 --via-ir",
