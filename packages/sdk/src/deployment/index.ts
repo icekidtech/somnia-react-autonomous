@@ -1,19 +1,21 @@
 /**
- * Deployment utilities for Somnia reactive handlers
+ * @module deployment
+ * @description Contract deployment utilities for Somnia reactive handlers
  */
 
-export interface DeploymentConfig {
-  chainId: number;
-  gasLimit?: bigint;
-  nonce?: number;
-}
+export * from './types';
+export {
+  verifyContract,
+  isValidAddress,
+  isValidTransactionHash,
+  encodeConstructorArgs,
+} from './verify';
+export {
+  deployEventFilterThrottle,
+  deployAutoCompoundHandler,
+  deployCronLikeScheduler,
+  deployLiquidationGuardian,
+  deployCrossCallOrchestrator,
+  deployUpgradeableReactiveProxy,
+} from './deployer';
 
-/**
- * Deploy contract with verification
- */
-export async function deployHandler(config: DeploymentConfig) {
-  // Implementation coming in Phase 3
-  throw new Error("Not yet implemented");
-}
-
-export { DeploymentConfig };
