@@ -41,7 +41,7 @@ export function parseEventSignature(signature: string): EventSignature {
   }
 
   const [, name, inputsStr] = match;
-  const inputs = inputsStr
+  const parameters = inputsStr
     .split(',')
     .filter((s) => s.trim())
     .map((input) => {
@@ -61,7 +61,7 @@ export function parseEventSignature(signature: string): EventSignature {
   return {
     name,
     signature,
-    inputs,
+    parameters,
   };
 }
 
@@ -83,11 +83,11 @@ export function validateSubscriptionConfig(config: SubscriptionConfig): { valid:
     return { valid: false, message: 'Invalid event signature format' };
   }
 
-  if (config.sourceChain !== undefined && !isValidChainId(config.sourceChain)) {
+  if (config.sourceChainId !== undefined && !isValidChainId(config.sourceChainId)) {
     return { valid: false, message: 'Invalid source chain ID' };
   }
 
-  if (config.targetChain !== undefined && !isValidChainId(config.targetChain)) {
+  if (config.targetChainId !== undefined && !isValidChainId(config.targetChainId)) {
     return { valid: false, message: 'Invalid target chain ID' };
   }
 

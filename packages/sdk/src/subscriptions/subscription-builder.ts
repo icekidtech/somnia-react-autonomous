@@ -39,7 +39,7 @@ export class SubscriptionBuilder {
    * Set source chain
    */
   fromChain(chainId: number): this {
-    this.config.sourceChain = chainId;
+    this.config.sourceChainId = chainId;
     return this;
   }
 
@@ -47,7 +47,7 @@ export class SubscriptionBuilder {
    * Set target chain
    */
   toChain(chainId: number): this {
-    this.config.targetChain = chainId;
+    this.config.targetChainId = chainId;
     return this;
   }
 

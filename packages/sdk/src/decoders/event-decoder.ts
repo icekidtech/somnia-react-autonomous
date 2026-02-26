@@ -119,7 +119,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): SuccessEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x1234567890123456789012345678901234567890123456789012345678901234')) {
+    if (log.topics[0] === '0x1234567890123456789012345678901234567890123456789012345678901234') {
       return {
         type: 'success',
         action: log.data || 'unknown',
@@ -141,7 +141,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): ErrorEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x2345678901234567890123456789012345678901234567890123456789012345')) {
+    if (log.topics[0] === '0x2345678901234567890123456789012345678901234567890123456789012345') {
       return {
         type: 'error',
         reason: log.topics[1] || 'unknown',
@@ -164,7 +164,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): ExecutionEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x3456789012345678901234567890123456789012345678901234567890123456')) {
+    if (log.topics[0] === '0x3456789012345678901234567890123456789012345678901234567890123456') {
       return {
         type: 'execution',
         step: log.topics[1] || 'unknown',
@@ -187,7 +187,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): ThrottleEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x4567890123456789012345678901234567890123456789012345678901234567')) {
+    if (log.topics[0] === '0x4567890123456789012345678901234567890123456789012345678901234567') {
       return {
         type: 'throttle',
         eventCount: parseInt(log.topics[1] || '0', 16),
@@ -210,7 +210,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): ScheduledExecutionEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x5678901234567890123456789012345678901234567890123456789012345678')) {
+    if (log.topics[0] === '0x5678901234567890123456789012345678901234567890123456789012345678') {
       return {
         type: 'scheduled',
         executedAt: parseInt(log.topics[1] || '0', 16),
@@ -233,7 +233,7 @@ export class EventDecoder {
     blockNumber: number;
     transactionHash: string;
   }): CrossCallEvent | null {
-    if (log.topics[0] === this.eventSignatures.get('0x6789012345678901234567890123456789012345678901234567890123456789')) {
+    if (log.topics[0] === '0x6789012345678901234567890123456789012345678901234567890123456789') {
       return {
         type: 'crosscall',
         callIndex: parseInt(log.topics[1] || '0', 16),

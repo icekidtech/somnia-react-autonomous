@@ -13,22 +13,24 @@ export interface SubscriptionFilter {
   toBlock?: number | 'latest';
 }
 
+
+
+/**
+ * Event parameter
+ */
+export interface EventParameter {
+  name: string;
+  type: string;
+  indexed?: boolean;
+}
+
 /**
  * Event signature definition
  */
 export interface EventSignature {
   name: string;
   signature: string;
-  inputs: EventInput[];
-}
-
-/**
- * Event input parameter
- */
-export interface EventInput {
-  name: string;
-  type: string;
-  indexed?: boolean;
+  parameters: EventParameter[];
 }
 
 /**
@@ -37,8 +39,8 @@ export interface EventInput {
 export interface ReactiveSubscription {
   id: string;
   handlerAddress: string;
-  sourceChain: number;
-  targetChain: number;
+  sourceChainId: number;
+  targetChainId: number;
   eventSignature: string;
   filters?: SubscriptionFilter;
   active: boolean;
@@ -53,8 +55,8 @@ export interface SubscriptionConfig {
   id?: string;
   handlerAddress: string;
   eventSignature: string;
-  sourceChain?: number;
-  targetChain?: number;
+  sourceChainId?: number;
+  targetChainId?: number;
   filters?: SubscriptionFilter;
 }
 
