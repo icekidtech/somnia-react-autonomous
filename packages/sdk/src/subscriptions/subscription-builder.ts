@@ -88,7 +88,10 @@ export class SubscriptionBuilder {
    * Build and validate
    */
   build(): SubscriptionConfig {
-    validateSubscriptionConfig(this.config);
+    const validation = validateSubscriptionConfig(this.config);
+    if (!validation.valid) {
+      throw new Error(validation.message || 'Invalid subscription configuration');
+    }
     return {
       ...this.config,
       id: generateSubscriptionId(this.config.handlerAddress, this.config.eventSignature),
