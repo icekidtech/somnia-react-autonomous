@@ -1,18 +1,15 @@
 /**
- * Subscription creation and management
+ * @module subscriptions
+ * @description Reactive subscription utilities
  */
 
-export interface SubscriptionConfig {
-  handlerAddress: string;
-  eventSignature: string;
-}
-
-/**
- * Create a subscription for a reactive handler
- */
-export function createSubscription(config: SubscriptionConfig) {
-  // Implementation coming in Phase 3
-  throw new Error("Not yet implemented");
-}
-
-export { SubscriptionConfig };
+export * from './types';
+export * from './validators';
+export {
+  SubscriptionBuilder,
+  createAutoCompoundSubscription,
+  createEventFilterThrottleSubscription,
+  createCronSchedulerSubscription,
+  createLiquidationGuardianSubscription,
+  createCrossCallOrchestratorSubscription,
+} from './subscription-builder';
