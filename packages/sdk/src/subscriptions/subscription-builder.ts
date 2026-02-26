@@ -147,7 +147,7 @@ export function createEventFilterThrottleSubscription(
 export function createCronSchedulerSubscription(
   handlerAddress: string,
   executionInterval: number,
-  eventSignature = 'ExecutionTick()'
+  eventSignature = 'ExecutionTick(uint256)'
 ): CronSchedulerSubscription {
   const config = new SubscriptionBuilder(handlerAddress)
     .onEvent(eventSignature)
@@ -185,7 +185,7 @@ export function createLiquidationGuardianSubscription(
 export function createCrossCallOrchestratorSubscription(
   handlerAddress: string,
   maxQueueSize: number,
-  eventSignature = 'TriggerExecution()'
+  eventSignature = 'TriggerExecution(uint256)'
 ): CrossCallOrchestratorSubscription {
   const config = new SubscriptionBuilder(handlerAddress)
     .onEvent(eventSignature)
