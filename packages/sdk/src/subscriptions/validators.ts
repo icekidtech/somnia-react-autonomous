@@ -3,8 +3,17 @@
  * @description Validation utilities for subscriptions
  */
 
-import { isValidAddress } from '../deployment/verify';
+import { isValidAddress as isValidAddressImpl } from '../deployment/verify';
 import { EventSignature, SubscriptionConfig } from './types';
+
+/**
+ * Validate Ethereum address format
+ * @param address Address to validate
+ * @returns True if valid
+ */
+export function isValidAddress(address: string): boolean {
+  return isValidAddressImpl(address);
+}
 
 /**
  * Validate event signature format
@@ -12,8 +21,8 @@ import { EventSignature, SubscriptionConfig } from './types';
  * @returns True if valid
  */
 export function isValidEventSignature(signature: string): boolean {
-  // Check format: EventName(type1,type2,...)
-  return /^[A-Za-z_][A-Za-z0-9_]*\([^)]*\)$/.test(signature);
+  // Check format: EventName(type1,type2,...) - requires at least one parameter
+  return /^[A-Za-z_][A-Za-z0-9_]*\([a-zA-Z0-9_\s,[\]]+\)$/.test(signature);
 }
 
 /**
