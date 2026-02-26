@@ -126,18 +126,18 @@ export function createAutoCompoundSubscription(
  */
 export function createEventFilterThrottleSubscription(
   handlerAddress: string,
-  eventSignature: string,
-  threshold: number,
-  windowSize: number
+  sourceAddress: string,
+  options: { maxEventsPerWindow: number; windowSizeBlocks: number }
 ): EventFilterThrottleSubscription {
   const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent(eventSignature)
+    .onEvent('EventThrottled(address,uint256)')
+    .withAddress(sourceAddress)
     .build();
 
   return {
     ...config,
-    threshold,
-    windowSize,
+    threshold: options.maxEventsPerWindow,
+    windowSize: options.windowSizeBlocks,
   };
 }
 

@@ -143,6 +143,21 @@ export function validateSubscriptionConfig(config: SubscriptionConfig): { valid:
     return { valid: false, message: 'Invalid target chain ID' };
   }
 
+  // Validate filter addresses if present
+  if (config.filters?.address) {
+    if (typeof config.filters.address === 'string') {
+      if (!isValidAddress(config.filters.address)) {
+        return { valid: false, message: 'Invalid address in filter' };
+      }
+    } else if (Array.isArray(config.filters.address)) {
+      for (const addr of config.filters.address) {
+        if (!isValidAddress(addr)) {
+          return { valid: false, message: 'Invalid address in filter' };
+        }
+      }
+    }
+  }
+
   return { valid: true };
 }
 
