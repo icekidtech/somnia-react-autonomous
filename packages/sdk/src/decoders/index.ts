@@ -1,18 +1,7 @@
 /**
- * Event decoders for Somnia reactive handler logs
+ * @module sdk/decoders
+ * @description Event decoding utilities
  */
 
-export interface DecodedEvent {
-  eventName: string;
-  data: Record<string, unknown>;
-}
-
-/**
- * Decode event logs from handler execution
- */
-export function decodeEvent(log: string): DecodedEvent {
-  // Implementation coming in Phase 3
-  throw new Error("Not yet implemented");
-}
-
-export { DecodedEvent };
+export * from './types';
+export { EventDecoder, createEventDecoder } from './event-decoder';
