@@ -19,10 +19,9 @@ import {
  */
 export class EventDecoder {
   private eventSignatures: Map<string, string> = new Map();
-  private abi?: ABI[];
 
-  constructor(abi?: ABI[]) {
-    this.abi = abi;
+  constructor(_abi?: ABI[]) {
+    // abi parameter reserved for future use with ethers.js ABI parsing
     this.initializeSignatures();
   }
 
@@ -266,7 +265,7 @@ export class EventDecoder {
 /**
  * Create event decoder for a handler type
  */
-export function createEventDecoder(handlerType: string): EventDecoder {
+export function createEventDecoder(_handlerType: string): EventDecoder {
   // Return decoder for specific handler type
   return new EventDecoder();
 }
