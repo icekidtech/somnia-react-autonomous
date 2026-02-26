@@ -20,9 +20,9 @@ import { validateSubscriptionConfig, generateSubscriptionId } from './validators
 export class SubscriptionBuilder {
   private config: SubscriptionConfig;
 
-  constructor(handlerAddress: string) {
+  constructor(handlerAddress?: string) {
     this.config = {
-      handlerAddress,
+      handlerAddress: handlerAddress || '0x0000000000000000000000000000000000000000',
       eventSignature: '',
     };
   }

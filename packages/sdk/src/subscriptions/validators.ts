@@ -21,17 +21,18 @@ export function isValidAddress(address: string): boolean {
  * @returns True if valid
  */
 export function isValidEventSignature(signature: string): boolean {
-  // Check format: EventName(type1,type2,...) - requires at least one parameter
-  return /^[A-Za-z_][A-Za-z0-9_]*\([a-zA-Z0-9_\s,[\]]+\)$/.test(signature);
+  // Check format: EventName(type1,type2,...) 
+  // Supports tuples like (uint256,bool) and arrays like uint256[]
+  return /^[A-Za-z_][A-Za-z0-9_]*\([a-zA-Z0-9_\s,[\]()]+\)$/.test(signature);
 }
 
 /**
  * Validate chain ID
  * @param chainId Chain ID to validate
- * @returns True if valid positive number
+ * @returns True if valid positive number and within reasonable range
  */
 export function isValidChainId(chainId: number): boolean {
-  return chainId > 0 && Number.isInteger(chainId);
+  return chainId > 0 && chainId <= 0xffffffff && Number.isInteger(chainId);
 }
 
 /**
@@ -50,27 +51,69 @@ export function parseEventSignature(signature: string): EventSignature {
   }
 
   const [, name, inputsStr] = match;
-  const parameters = inputsStr
-    .split(',')
-    .filter((s) => s.trim())
-    .map((input) => {
-      const trimmed = input.trim();
-      const parts = trimmed.split(' ');
-      const isIndexed = parts.includes('indexed');
-      const type = parts.find((p) => !['indexed'].includes(p))!;
-      const paramName = parts.filter((p) => !['indexed', type].includes(p))[0] || '';
-
-      return {
-        name: paramName,
-        type,
-        indexed: isIndexed,
-      };
-    });
+  
+  // Parse parameters respecting parenthesis nesting for tuples
+  const parameters: Array<{ name: string; type: string; indexed: boolean }> = [];
+  let current = '';
+  let depth = 0;
+  
+  for (let i = 0; i < inputsStr.length; i++) {
+    const char = inputsStr[i];
+    if (char === '(') depth++;
+    else if (char === ')') depth--;
+    else if (char === ',' && depth === 0) {
+      if (current.trim()) {
+        parameters.push(parseParameter(current.trim()));
+      }
+      current = '';
+      continue;
+    }
+    current += char;
+  }
+  
+  if (current.trim()) {
+    parameters.push(parseParameter(current.trim()));
+  }
 
   return {
     name,
     signature,
     parameters,
+  };
+}
+
+/**
+ * Parse a single parameter
+ */
+function parseParameter(param: string): { name: string; type: string; indexed: boolean } {
+  const trimmed = param.trim();
+  const parts = trimmed.split(/\s+/);
+  const isIndexed = parts.includes('indexed');
+  
+  // Find the type (starts from the beginning, before any parameter name)
+  let typeEnd = 0;
+  let parenDepth = 0;
+  for (let i = 0; i < trimmed.length; i++) {
+    if (trimmed[i] === '(') parenDepth++;
+    else if (trimmed[i] === ')') parenDepth--;
+    else if (trimmed[i] === ' ' && parenDepth === 0) {
+      typeEnd = i;
+      break;
+    }
+  }
+  
+  if (typeEnd === 0) {
+    // No space found, entire thing is the type
+    return { name: '', type: trimmed, indexed: false };
+  }
+  
+  const type = trimmed.substring(0, typeEnd).trim();
+  const paramName = trimmed.substring(typeEnd).trim().replace('indexed', '').trim();
+
+  return {
+    name: paramName,
+    type,
+    indexed: isIndexed,
   };
 }
 
@@ -131,6 +174,20 @@ export function isValidFilter(filter: Record<string, unknown>): boolean {
       }
     } else if (Array.isArray(filter.address)) {
       if (!filter.address.every((addr) => isValidAddress(addr))) {
+        return false;
+      }
+    }
+  }
+
+  // Check topics if present - topics should be valid hash strings (0x prefix + 64 hex chars for signature hash)
+  if (filter.topics) {
+    if (Array.isArray(filter.topics)) {
+      if (!filter.topics.every((topic) => {
+        if (typeof topic === 'string') {
+          return /^0x[a-fA-F0-9]{64}$/.test(topic);
+        }
+        return false;
+      })) {
         return false;
       }
     }
