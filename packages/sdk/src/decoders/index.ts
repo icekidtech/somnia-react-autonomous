@@ -1,5 +1,5 @@
 /**
- * @module sdk/decoders
+                             * @module sdk/decoders
  * @description Event decoding utilities
  */
 
