@@ -4,7 +4,14 @@
  */
 
 export * from './types';
-export * from './validators';
+export {
+  isValidEventSignature,
+  isValidChainId,
+  parseEventSignature,
+  validateSubscriptionConfig,
+  generateSubscriptionId,
+  isValidFilter,
+} from './validators';
 export {
   SubscriptionBuilder,
   createAutoCompoundSubscription,
@@ -13,3 +20,4 @@ export {
   createLiquidationGuardianSubscription,
   createCrossCallOrchestratorSubscription,
 } from './subscription-builder';
+
