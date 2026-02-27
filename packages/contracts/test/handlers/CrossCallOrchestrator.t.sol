@@ -144,7 +144,7 @@ contract CrossCallOrchestratorTest is Test {
         
         address user = address(0x2);
         vm.prank(user);
-        vm.expectRevert("Only owner");
+        vm.expectRevert(BaseReactiveHandler.Unauthorized.selector);
         orchestrator.enqueueCall(address(target), callData);
     }
 }
