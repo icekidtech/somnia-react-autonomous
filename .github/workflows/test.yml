@@ -44,6 +44,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Type check
+        run: pnpm --filter sdk type-check
+
+      - name: Lint TypeScript
+        run: pnpm run lint:ts
+
       - name: Run SDK tests
         run: pnpm run test:sdk
 

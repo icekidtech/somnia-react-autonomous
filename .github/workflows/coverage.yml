@@ -36,7 +36,7 @@ jobs:
         run: forge coverage --via-ir --report lcov
 
       - name: Generate TypeScript coverage
-        run: pnpm run test:sdk -- --coverage
+        run: pnpm --filter sdk test:coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
