@@ -42,8 +42,15 @@ jobs:
       - name: Run SDK tests
         run: pnpm --filter sdk test
 
-      - name: Build packages
-        run: pnpm build
+      - name: Build Solidity contracts
+        working-directory: packages/contracts
+        run: foundry build && hardhat compile && echo 'Build complete'
+
+      - name: Build SDK
+        run: pnpm --filter sdk build
+
+      - name: Build docs
+        run: pnpm --filter docs build
 
       - name: Publish to npm
         env:
