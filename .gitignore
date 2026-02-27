@@ -65,3 +65,5 @@ packages/docs/.vitepress/cache/
 # pnpm
 .pnpm-debug.log
 pnpm-lock.yaml
+
+packages/sdk/coverage
