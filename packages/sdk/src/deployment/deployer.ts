@@ -262,7 +262,7 @@ export async function deployUpgradeableReactiveProxy(
 /**
  * Validate configuration object
  */
-function validateConfig<T extends Record<string, unknown>>(config: T): void {
+function validateConfig(config: unknown): void {
   if (!config || typeof config !== "object") {
     throw new Error("Configuration must be a non-null object");
   }
