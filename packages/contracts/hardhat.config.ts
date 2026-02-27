@@ -1,11 +1,8 @@
-import { HardhatUserConfig } from "hardhat/config";
-import "@nomiclabs/hardhat-ethers";
-import "@nomiclabs/hardhat-waffle";
-import "@openzeppelin/hardhat-upgrades";
-import "hardhat-gas-reporter";
-import "solidity-coverage";
+require("@openzeppelin/hardhat-upgrades");
+require("hardhat-gas-reporter");
+require("solidity-coverage");
 
-const config: HardhatUserConfig = {
+const config = {
   solidity: {
     version: "0.8.25",
     settings: {
@@ -35,4 +32,4 @@ const config: HardhatUserConfig = {
   },
 };
 
-export default config;
+module.exports = config;
