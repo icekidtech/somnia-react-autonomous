@@ -50,15 +50,12 @@ jobs:
         run: pnpm --filter sdk build
 
       - name: Build docs
-        run: pnpm --filter docs build
+        run: pnpm docs:build
 
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: pnpm publish --no-git-checks
-
-      - name: Build docs
-        run: pnpm docs:build
 
       - name: Deploy docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
