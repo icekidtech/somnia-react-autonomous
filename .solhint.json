@@ -9,6 +9,12 @@
     "not-rely-on-block-hash": "error",
     "not-rely-on-time": "warn",
     "reentrancy": "error",
-    "state-visibility": "error"
+    "state-visibility": "error",
+    "func-visibility": "off",
+    "gas-custom-errors": "off",
+    "gas-increment-by-one": "off",
+    "no-inline-assembly": "warn",
+    "avoid-low-level-calls": "warn",
+    "gas-calldata-parameters": "off"
   }
 }

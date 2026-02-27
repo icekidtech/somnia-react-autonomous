@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "../base/BaseReactiveHandler.sol";
+import {BaseReactiveHandler} from "../base/BaseReactiveHandler.sol";
 
 /**
  * @title UpgradeableReactiveProxy
@@ -15,11 +15,11 @@ contract UpgradeableReactiveProxy is BaseReactiveHandler {
 
     /// @notice Storage slot for implementation address
     bytes32 private constant IMPLEMENTATION_SLOT =
-        bytes32(uint256(keccak256('somnia.reactive.proxy.implementation')) - 1);
+        bytes32(uint256(keccak256("somnia.reactive.proxy.implementation")) - 1);
 
     /// @notice Storage slot for admin address
     bytes32 private constant ADMIN_SLOT =
-        bytes32(uint256(keccak256('somnia.reactive.proxy.admin')) - 1);
+        bytes32(uint256(keccak256("somnia.reactive.proxy.admin")) - 1);
 
     // ============================================================================
     // EVENTS
