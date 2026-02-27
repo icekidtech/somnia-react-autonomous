@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Solidity contracts
         working-directory: packages/contracts
-        run: foundry build && hardhat compile && echo 'Build complete'
+        run: forge build && hardhat compile && echo 'Build complete'
 
       - name: Build SDK
         run: pnpm --filter sdk build
