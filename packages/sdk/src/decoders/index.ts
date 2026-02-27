@@ -1,7 +1,7 @@
 /**
-                             * @module sdk/decoders
+ * @module sdk/decoders
  * @description Event decoding utilities
  */
 
-export * from './types';
-export { EventDecoder, createEventDecoder } from './event-decoder';
+export * from "./types";
+export { EventDecoder, createEventDecoder } from "./event-decoder";

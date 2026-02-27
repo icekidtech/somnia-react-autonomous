@@ -11,8 +11,8 @@ import {
   CronSchedulerSubscription,
   LiquidationGuardianSubscription,
   CrossCallOrchestratorSubscription,
-} from './types';
-import { validateSubscriptionConfig, generateSubscriptionId } from './validators';
+} from "./types";
+import { validateSubscriptionConfig, generateSubscriptionId } from "./validators";
 
 /**
  * Subscription builder with fluent API
@@ -22,8 +22,8 @@ export class SubscriptionBuilder {
 
   constructor(handlerAddress?: string) {
     this.config = {
-      handlerAddress: handlerAddress || '0x0000000000000000000000000000000000000000',
-      eventSignature: '',
+      handlerAddress: handlerAddress || "0x0000000000000000000000000000000000000000",
+      eventSignature: "",
     };
   }
 
@@ -90,7 +90,7 @@ export class SubscriptionBuilder {
   build(): SubscriptionConfig {
     const validation = validateSubscriptionConfig(this.config);
     if (!validation.valid) {
-      throw new Error(validation.message || 'Invalid subscription configuration');
+      throw new Error(validation.message || "Invalid subscription configuration");
     }
     return {
       ...this.config,
@@ -107,11 +107,9 @@ export function createAutoCompoundSubscription(
   rewardToken: string,
   targetVault: string,
   minCompoundAmount: string,
-  eventSignature = 'Transfer(indexed address,indexed address,uint256)'
+  eventSignature = "Transfer(indexed address,indexed address,uint256)"
 ): AutoCompoundSubscription {
-  const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent(eventSignature)
-    .build();
+  const config = new SubscriptionBuilder(handlerAddress).onEvent(eventSignature).build();
 
   return {
     ...config,
@@ -130,7 +128,7 @@ export function createEventFilterThrottleSubscription(
   options: { maxEventsPerWindow: number; windowSizeBlocks: number }
 ): EventFilterThrottleSubscription {
   const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent('EventThrottled(address,uint256)')
+    .onEvent("EventThrottled(address,uint256)")
     .withAddress(sourceAddress)
     .build();
 
@@ -147,11 +145,9 @@ export function createEventFilterThrottleSubscription(
 export function createCronSchedulerSubscription(
   handlerAddress: string,
   executionInterval: number,
-  eventSignature = 'ExecutionTick(uint256)'
+  eventSignature = "ExecutionTick(uint256)"
 ): CronSchedulerSubscription {
-  const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent(eventSignature)
-    .build();
+  const config = new SubscriptionBuilder(handlerAddress).onEvent(eventSignature).build();
 
   return {
     ...config,
@@ -166,11 +162,9 @@ export function createLiquidationGuardianSubscription(
   handlerAddress: string,
   healthFactorThreshold: string,
   priceOracleAddress: string,
-  eventSignature = 'PriceUpdated(indexed address,uint256)'
+  eventSignature = "PriceUpdated(indexed address,uint256)"
 ): LiquidationGuardianSubscription {
-  const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent(eventSignature)
-    .build();
+  const config = new SubscriptionBuilder(handlerAddress).onEvent(eventSignature).build();
 
   return {
     ...config,
@@ -185,11 +179,9 @@ export function createLiquidationGuardianSubscription(
 export function createCrossCallOrchestratorSubscription(
   handlerAddress: string,
   maxQueueSize: number,
-  eventSignature = 'TriggerExecution(uint256)'
+  eventSignature = "TriggerExecution(uint256)"
 ): CrossCallOrchestratorSubscription {
-  const config = new SubscriptionBuilder(handlerAddress)
-    .onEvent(eventSignature)
-    .build();
+  const config = new SubscriptionBuilder(handlerAddress).onEvent(eventSignature).build();
 
   return {
     ...config,

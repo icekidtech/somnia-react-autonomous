@@ -9,11 +9,9 @@
 export interface SubscriptionFilter {
   topics?: string[];
   address?: string | string[];
-  fromBlock?: number | 'latest';
-  toBlock?: number | 'latest';
+  fromBlock?: number | "latest";
+  toBlock?: number | "latest";
 }
-
-
 
 /**
  * Event parameter

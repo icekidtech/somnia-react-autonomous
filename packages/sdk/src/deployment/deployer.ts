@@ -11,8 +11,8 @@ import {
   CronSchedulerConfig,
   LiquidationGuardianConfig,
   CrossCallOrchestratorConfig,
-} from './types';
-import { verifyContract, isValidAddress } from './verify';
+} from "./types";
+import { verifyContract, isValidAddress } from "./verify";
 
 /**
  * Deploy EventFilterThrottle contract
@@ -27,9 +27,9 @@ export async function deployEventFilterThrottle(
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'EventFilterThrottle',
+    type: "EventFilterThrottle",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
+    network: options?.network.name || "unknown",
     constructorArgs: [config.maxEventsPerWindow, config.windowSizeBlocks, config.initialOwner],
     initializationData: config as unknown as Record<string, unknown>,
     verified: false,
@@ -40,7 +40,7 @@ export async function deployEventFilterThrottle(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'EventFilterThrottle',
+      contractName: "EventFilterThrottle",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -60,16 +60,16 @@ export async function deployAutoCompoundHandler(
   validateConfig(config);
 
   if (!isValidAddress(config.tokenAddress) || !isValidAddress(config.vaultAddress)) {
-    throw new Error('Invalid token or vault address');
+    throw new Error("Invalid token or vault address");
   }
 
   const result: HandlerDeploymentResult = {
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'AutoCompound',
+    type: "AutoCompound",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
+    network: options?.network.name || "unknown",
     constructorArgs: [
       config.vaultAddress,
       config.tokenAddress,
@@ -84,7 +84,7 @@ export async function deployAutoCompoundHandler(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'AutoCompoundHandler',
+      contractName: "AutoCompoundHandler",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -104,16 +104,16 @@ export async function deployCronLikeScheduler(
   validateConfig(config);
 
   if (config.intervalBlocks <= 0) {
-    throw new Error('Interval blocks must be positive');
+    throw new Error("Interval blocks must be positive");
   }
 
   const result: HandlerDeploymentResult = {
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'CronScheduler',
+    type: "CronScheduler",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
+    network: options?.network.name || "unknown",
     constructorArgs: [config.intervalBlocks, config.initialOwner],
     initializationData: config as unknown as Record<string, unknown>,
     verified: false,
@@ -123,7 +123,7 @@ export async function deployCronLikeScheduler(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'CronLikeScheduler',
+      contractName: "CronLikeScheduler",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -143,16 +143,16 @@ export async function deployLiquidationGuardian(
   validateConfig(config);
 
   if (!isValidAddress(config.oracleAddress)) {
-    throw new Error('Invalid oracle address');
+    throw new Error("Invalid oracle address");
   }
 
   const result: HandlerDeploymentResult = {
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'LiquidationGuardian',
+    type: "LiquidationGuardian",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
+    network: options?.network.name || "unknown",
     constructorArgs: [
       config.oracleAddress,
       config.healthFactorThreshold,
@@ -167,7 +167,7 @@ export async function deployLiquidationGuardian(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'LiquidationGuardian',
+      contractName: "LiquidationGuardian",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -187,21 +187,17 @@ export async function deployCrossCallOrchestrator(
   validateConfig(config);
 
   if (config.maxQueueSize <= 0) {
-    throw new Error('Max queue size must be positive');
+    throw new Error("Max queue size must be positive");
   }
 
   const result: HandlerDeploymentResult = {
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'CrossCallOrchestrator',
+    type: "CrossCallOrchestrator",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
-    constructorArgs: [
-      config.maxQueueSize,
-      config.maxCallDataSize || 10000,
-      config.initialOwner,
-    ],
+    network: options?.network.name || "unknown",
+    constructorArgs: [config.maxQueueSize, config.maxCallDataSize || 10000, config.initialOwner],
     initializationData: config as unknown as Record<string, unknown>,
     verified: false,
   };
@@ -210,7 +206,7 @@ export async function deployCrossCallOrchestrator(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'CrossCallOrchestrator',
+      contractName: "CrossCallOrchestrator",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -233,25 +229,18 @@ export async function deployUpgradeableReactiveProxy(
 ): Promise<HandlerDeploymentResult> {
   validateConfig(config);
 
-  if (
-    !isValidAddress(config.implementationAddress) ||
-    !isValidAddress(config.adminAddress)
-  ) {
-    throw new Error('Invalid implementation or admin address');
+  if (!isValidAddress(config.implementationAddress) || !isValidAddress(config.adminAddress)) {
+    throw new Error("Invalid implementation or admin address");
   }
 
   const result: HandlerDeploymentResult = {
     address: generateMockAddress(),
     transactionHash: generateMockHash(),
     blockNumber: 1234567,
-    type: 'UpgradeableProxy',
+    type: "UpgradeableProxy",
     deploymentTime: new Date(),
-    network: options?.network.name || 'unknown',
-    constructorArgs: [
-      config.implementationAddress,
-      config.adminAddress,
-      config.initialOwner,
-    ],
+    network: options?.network.name || "unknown",
+    constructorArgs: [config.implementationAddress, config.adminAddress, config.initialOwner],
     initializationData: config as unknown as Record<string, unknown>,
     verified: false,
   };
@@ -260,7 +249,7 @@ export async function deployUpgradeableReactiveProxy(
     await verifyContract({
       address: result.address,
       constructorArgs: result.constructorArgs,
-      contractName: 'UpgradeableReactiveProxy',
+      contractName: "UpgradeableReactiveProxy",
       explorerApiKey: options.network.explorerApiKey,
       explorerApiUrl: options.network.explorerUrl,
       chainId: options.network.chainId,
@@ -274,8 +263,8 @@ export async function deployUpgradeableReactiveProxy(
  * Validate configuration object
  */
 function validateConfig<T extends Record<string, unknown>>(config: T): void {
-  if (!config || typeof config !== 'object') {
-    throw new Error('Configuration must be a non-null object');
+  if (!config || typeof config !== "object") {
+    throw new Error("Configuration must be a non-null object");
   }
 }
 
@@ -283,18 +272,24 @@ function validateConfig<T extends Record<string, unknown>>(config: T): void {
  * Generate mock address for testing
  */
 function generateMockAddress(): string {
-  return '0x' + Array(40)
-    .fill(0)
-    .map(() => Math.floor(Math.random() * 16).toString(16))
-    .join('');
+  return (
+    "0x" +
+    Array(40)
+      .fill(0)
+      .map(() => Math.floor(Math.random() * 16).toString(16))
+      .join("")
+  );
 }
 
 /**
  * Generate mock transaction hash for testing
  */
 function generateMockHash(): string {
-  return '0x' + Array(64)
-    .fill(0)
-    .map(() => Math.floor(Math.random() * 16).toString(16))
-    .join('');
+  return (
+    "0x" +
+    Array(64)
+      .fill(0)
+      .map(() => Math.floor(Math.random() * 16).toString(16))
+      .join("")
+  );
 }

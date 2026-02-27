@@ -41,7 +41,13 @@ export interface DeploymentResult {
  * Handler deployment result
  */
 export interface HandlerDeploymentResult extends DeploymentResult {
-  type: 'EventFilterThrottle' | 'AutoCompound' | 'CronScheduler' | 'LiquidationGuardian' | 'CrossCallOrchestrator' | 'UpgradeableProxy';
+  type:
+    | "EventFilterThrottle"
+    | "AutoCompound"
+    | "CronScheduler"
+    | "LiquidationGuardian"
+    | "CrossCallOrchestrator"
+    | "UpgradeableProxy";
   initializationData?: Record<string, unknown>;
   verified?: boolean;
 }
@@ -97,7 +103,7 @@ export interface VerificationOptions {
  * Verification result
  */
 export interface VerificationResult {
-  status: 'success' | 'failure' | 'pending';
+  status: "success" | "failure" | "pending";
   message: string;
   url?: string;
 }

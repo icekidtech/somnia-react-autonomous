@@ -3,7 +3,7 @@
  * @description Contract verification utilities
  */
 
-import { VerificationOptions, VerificationResult } from './types';
+import { VerificationOptions, VerificationResult } from "./types";
 
 /**
  * Verify a contract on Etherscan or similar explorer
@@ -11,25 +11,20 @@ import { VerificationOptions, VerificationResult } from './types';
  * @returns Verification result
  */
 export async function verifyContract(options: VerificationOptions): Promise<VerificationResult> {
-  const {
-    address,
-    contractName = 'Handler',
-    explorerApiUrl,
-    explorerApiKey,
-  } = options;
+  const { address, contractName = "Handler", explorerApiUrl, explorerApiKey } = options;
 
   // Validate inputs
   if (!explorerApiUrl || !explorerApiKey) {
     return {
-      status: 'failure',
-      message: 'Explorer API URL or API key is missing',
+      status: "failure",
+      message: "Explorer API URL or API key is missing",
     };
   }
 
   if (!isValidAddress(address)) {
     return {
-      status: 'failure',
-      message: 'Invalid contract address',
+      status: "failure",
+      message: "Invalid contract address",
     };
   }
 
@@ -37,14 +32,14 @@ export async function verifyContract(options: VerificationOptions): Promise<Veri
     // For now, return a pending status
     // In production, this would make an API call to the explorer
     return {
-      status: 'pending',
+      status: "pending",
       message: `Contract ${contractName} at ${address} verification submitted`,
       url: `${explorerApiUrl}/address/${address}`,
     };
   } catch (error) {
     return {
-      status: 'failure',
-      message: `Verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      status: "failure",
+      message: `Verification failed: ${error instanceof Error ? error.message : "Unknown error"}`,
     };
   }
 }
@@ -76,13 +71,13 @@ export function encodeConstructorArgs(...args: unknown[]): string {
   // Simplified implementation - in production would use ethers.js ABI encoding
   return args
     .map((arg) => {
-      if (typeof arg === 'string' && arg.startsWith('0x')) {
-        return arg.slice(2).padStart(64, '0');
+      if (typeof arg === "string" && arg.startsWith("0x")) {
+        return arg.slice(2).padStart(64, "0");
       }
-      if (typeof arg === 'number') {
-        return arg.toString(16).padStart(64, '0');
+      if (typeof arg === "number") {
+        return arg.toString(16).padStart(64, "0");
       }
       return JSON.stringify(arg);
     })
-    .join('');
+    .join("");
 }

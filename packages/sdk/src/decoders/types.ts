@@ -22,7 +22,7 @@ export interface DecodedEvent {
  * Handler success event
  */
 export interface SuccessEvent {
-  type: 'success';
+  type: "success";
   action: string;
   address: string;
   blockNumber: number;
@@ -33,7 +33,7 @@ export interface SuccessEvent {
  * Handler error event
  */
 export interface ErrorEvent {
-  type: 'error';
+  type: "error";
   reason: string;
   data: string;
   address: string;
@@ -45,7 +45,7 @@ export interface ErrorEvent {
  * Execution event
  */
 export interface ExecutionEvent {
-  type: 'execution';
+  type: "execution";
   step: string;
   result: boolean;
   address: string;
@@ -57,7 +57,7 @@ export interface ExecutionEvent {
  * Throttle event
  */
 export interface ThrottleEvent {
-  type: 'throttle';
+  type: "throttle";
   eventCount: number;
   threshold: number;
   address: string;
@@ -69,7 +69,7 @@ export interface ThrottleEvent {
  * Scheduled execution event
  */
 export interface ScheduledExecutionEvent {
-  type: 'scheduled';
+  type: "scheduled";
   executedAt: number;
   nextExecutedAt: number;
   address: string;
@@ -81,7 +81,7 @@ export interface ScheduledExecutionEvent {
  * Cross call event
  */
 export interface CrossCallEvent {
-  type: 'crosscall';
+  type: "crosscall";
   callIndex: number;
   target: string;
   data: string;

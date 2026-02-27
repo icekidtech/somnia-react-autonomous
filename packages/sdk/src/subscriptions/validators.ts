@@ -3,8 +3,8 @@
  * @description Validation utilities for subscriptions
  */
 
-import { isValidAddress as isValidAddressImpl } from '../deployment/verify';
-import { EventSignature, SubscriptionConfig } from './types';
+import { isValidAddress as isValidAddressImpl } from "../deployment/verify";
+import { EventSignature, SubscriptionConfig } from "./types";
 
 /**
  * Validate Ethereum address format
@@ -51,26 +51,26 @@ export function parseEventSignature(signature: string): EventSignature {
   }
 
   const [, name, inputsStr] = match;
-  
+
   // Parse parameters respecting parenthesis nesting for tuples
   const parameters: Array<{ name: string; type: string; indexed: boolean }> = [];
-  let current = '';
+  let current = "";
   let depth = 0;
-  
+
   for (let i = 0; i < inputsStr.length; i++) {
     const char = inputsStr[i];
-    if (char === '(') depth++;
-    else if (char === ')') depth--;
-    else if (char === ',' && depth === 0) {
+    if (char === "(") depth++;
+    else if (char === ")") depth--;
+    else if (char === "," && depth === 0) {
       if (current.trim()) {
         parameters.push(parseParameter(current.trim()));
       }
-      current = '';
+      current = "";
       continue;
     }
     current += char;
   }
-  
+
   if (current.trim()) {
     parameters.push(parseParameter(current.trim()));
   }
@@ -88,27 +88,27 @@ export function parseEventSignature(signature: string): EventSignature {
 function parseParameter(param: string): { name: string; type: string; indexed: boolean } {
   const trimmed = param.trim();
   const parts = trimmed.split(/\s+/);
-  const isIndexed = parts.includes('indexed');
-  
+  const isIndexed = parts.includes("indexed");
+
   // Find the type (starts from the beginning, before any parameter name)
   let typeEnd = 0;
   let parenDepth = 0;
   for (let i = 0; i < trimmed.length; i++) {
-    if (trimmed[i] === '(') parenDepth++;
-    else if (trimmed[i] === ')') parenDepth--;
-    else if (trimmed[i] === ' ' && parenDepth === 0) {
+    if (trimmed[i] === "(") parenDepth++;
+    else if (trimmed[i] === ")") parenDepth--;
+    else if (trimmed[i] === " " && parenDepth === 0) {
       typeEnd = i;
       break;
     }
   }
-  
+
   if (typeEnd === 0) {
     // No space found, entire thing is the type
-    return { name: '', type: trimmed, indexed: false };
+    return { name: "", type: trimmed, indexed: false };
   }
-  
+
   const type = trimmed.substring(0, typeEnd).trim();
-  const paramName = trimmed.substring(typeEnd).trim().replace('indexed', '').trim();
+  const paramName = trimmed.substring(typeEnd).trim().replace("indexed", "").trim();
 
   return {
     name: paramName,
@@ -122,37 +122,40 @@ function parseParameter(param: string): { name: string; type: string; indexed: b
  * @param config Configuration to validate
  * @returns Validation result with validity and optional message
  */
-export function validateSubscriptionConfig(config: SubscriptionConfig): { valid: boolean; message?: string } {
-  if (!config || typeof config !== 'object') {
-    return { valid: false, message: 'Configuration must be a non-null object' };
+export function validateSubscriptionConfig(config: SubscriptionConfig): {
+  valid: boolean;
+  message?: string;
+} {
+  if (!config || typeof config !== "object") {
+    return { valid: false, message: "Configuration must be a non-null object" };
   }
 
   if (!config.handlerAddress || !isValidAddress(config.handlerAddress)) {
-    return { valid: false, message: 'Invalid handler address' };
+    return { valid: false, message: "Invalid handler address" };
   }
 
   if (!config.eventSignature || !isValidEventSignature(config.eventSignature)) {
-    return { valid: false, message: 'Invalid event signature format' };
+    return { valid: false, message: "Invalid event signature format" };
   }
 
   if (config.sourceChainId !== undefined && !isValidChainId(config.sourceChainId)) {
-    return { valid: false, message: 'Invalid source chain ID' };
+    return { valid: false, message: "Invalid source chain ID" };
   }
 
   if (config.targetChainId !== undefined && !isValidChainId(config.targetChainId)) {
-    return { valid: false, message: 'Invalid target chain ID' };
+    return { valid: false, message: "Invalid target chain ID" };
   }
 
   // Validate filter addresses if present
   if (config.filters?.address) {
-    if (typeof config.filters.address === 'string') {
+    if (typeof config.filters.address === "string") {
       if (!isValidAddress(config.filters.address)) {
-        return { valid: false, message: 'Invalid address in filter' };
+        return { valid: false, message: "Invalid address in filter" };
       }
     } else if (Array.isArray(config.filters.address)) {
       for (const addr of config.filters.address) {
         if (!isValidAddress(addr)) {
-          return { valid: false, message: 'Invalid address in filter' };
+          return { valid: false, message: "Invalid address in filter" };
         }
       }
     }
@@ -168,7 +171,7 @@ export function validateSubscriptionConfig(config: SubscriptionConfig): { valid:
  * @returns Unique subscription ID
  */
 export function generateSubscriptionId(eventSignature: string, handlerAddress: string): string {
-  return `${handlerAddress.toLowerCase()}_${eventSignature.replace(/[(),\s]/g, '')}`;
+  return `${handlerAddress.toLowerCase()}_${eventSignature.replace(/[(),\s]/g, "")}`;
 }
 
 /**
@@ -177,13 +180,13 @@ export function generateSubscriptionId(eventSignature: string, handlerAddress: s
  * @returns True if valid
  */
 export function isValidFilter(filter: Record<string, unknown>): boolean {
-  if (!filter || typeof filter !== 'object') {
+  if (!filter || typeof filter !== "object") {
     return false;
   }
 
   // Check address if present
   if (filter.address) {
-    if (typeof filter.address === 'string') {
+    if (typeof filter.address === "string") {
       if (!isValidAddress(filter.address)) {
         return false;
       }
@@ -197,12 +200,14 @@ export function isValidFilter(filter: Record<string, unknown>): boolean {
   // Check topics if present - topics should be valid hash strings (0x prefix + 64 hex chars for signature hash)
   if (filter.topics) {
     if (Array.isArray(filter.topics)) {
-      if (!filter.topics.every((topic) => {
-        if (typeof topic === 'string') {
-          return /^0x[a-fA-F0-9]{64}$/.test(topic);
-        }
-        return false;
-      })) {
+      if (
+        !filter.topics.every((topic) => {
+          if (typeof topic === "string") {
+            return /^0x[a-fA-F0-9]{64}$/.test(topic);
+          }
+          return false;
+        })
+      ) {
         return false;
       }
     }
