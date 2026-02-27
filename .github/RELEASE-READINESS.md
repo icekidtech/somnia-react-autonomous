@@ -103,7 +103,7 @@
 1. Visit: https://www.npmjs.com/settings/~token
 2. Create "Granular Access Token"
 3. Permissions: write:packages
-4. Copy token (you won't see it again)
+4. Copy token (you will not see it again)
 ```
 
 #### Step 2️⃣: Add NPM_TOKEN to GitHub Secrets
