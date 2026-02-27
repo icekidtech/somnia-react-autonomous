@@ -140,7 +140,7 @@ contract LiquidationGuardianTest is Test {
 
     function testOnlyOwnerCanUpdateThreshold() public {
         vm.prank(user); // Not owner
-        vm.expectRevert("Only owner");
+        vm.expectRevert(BaseReactiveHandler.Unauthorized.selector);
         guardian.setHealthFactorThreshold(1200e15);
     }
 }

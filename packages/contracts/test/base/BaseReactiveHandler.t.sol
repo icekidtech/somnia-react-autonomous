@@ -44,7 +44,7 @@ contract BaseReactiveHandlerTest is Test {
     function testOnlyOwnerCanTransfer() public {
         address user = address(0x1);
         vm.prank(user);
-        vm.expectRevert("Only owner");
+        vm.expectRevert(BaseReactiveHandler.Unauthorized.selector);
         handler.transferOwnership(address(0x4));
     }
 

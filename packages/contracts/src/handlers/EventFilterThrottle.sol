@@ -94,7 +94,7 @@ contract EventFilterThrottle is BaseReactiveHandler {
      * @notice Handle incoming reactive event with throttling
      * @param eventData Event data from Somnia reactive network
      */
-    function _onEvent(bytes memory eventData) internal override nonReentrant {
+    function _onEvent(bytes memory) internal override nonReentrant {
         // Check if window has expired
         if (block.timestamp >= lastExecutionTime + windowSize) {
             // Window expired, reset counter

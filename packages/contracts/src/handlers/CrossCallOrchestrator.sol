@@ -131,7 +131,7 @@ contract CrossCallOrchestrator is BaseReactiveHandler {
      * @notice Handle reactive event and execute queued calls
      * @param eventData Event data from Somnia reactive network
      */
-    function _onEvent(bytes memory eventData) internal override nonReentrant gasLimitCheck(150000) {
+    function _onEvent(bytes memory) internal override nonReentrant gasLimitCheck(150000) {
         if (callQueue.length == 0) {
             emit ReactiveExecution("empty_queue", false);
             _emitSuccess("queue_empty");
