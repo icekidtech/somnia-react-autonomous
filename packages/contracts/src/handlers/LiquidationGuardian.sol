@@ -201,9 +201,8 @@ contract LiquidationGuardian is BaseReactiveHandler {
 
     /**
      * @notice Perform the actual liquidation call
-     * @param user User to liquidate
      */
-    function _performLiquidation(address user) external {
+    function _performLiquidation(address /* user */) external {
         // This is a simplified version - actual implementation would:
         // 1. Get protocol state (collateral, debt assets)
         // 2. Calculate optimal debt to cover

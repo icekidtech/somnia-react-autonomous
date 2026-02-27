@@ -6,7 +6,7 @@ import "../../src/handlers/LiquidationGuardian.sol";
 
 // Mock oracle
 contract MockOracle {
-    function getPrice(address token) external view returns (uint256) {
+    function getPrice(address /* token */) external view returns (uint256) {
         return 1e18; // $1 per token
     }
 }

@@ -8,7 +8,7 @@ import "../../src/upgradeable/UpgradeableReactiveProxy.sol";
 contract MockImplementation is BaseReactiveHandler {
     uint256 public version = 1;
 
-    function _onEvent(bytes memory eventData) internal override {
+    function _onEvent(bytes memory) internal override {
         _emitSuccess("v1_event");
     }
 }
