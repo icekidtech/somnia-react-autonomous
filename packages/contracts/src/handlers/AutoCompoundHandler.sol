@@ -101,7 +101,6 @@ contract AutoCompoundHandler is BaseReactiveHandler {
 
     /**
      * @notice Handle reward transfer event
-     * @param eventData Event data from Somnia reactive network
      */
     function _onEvent(bytes memory) internal override nonReentrant gasLimitCheck(50000) {
         // Check current reward balance

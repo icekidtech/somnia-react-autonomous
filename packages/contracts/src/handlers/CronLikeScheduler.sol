@@ -87,7 +87,6 @@ contract CronLikeScheduler is BaseReactiveHandler {
 
     /**
      * @notice Handle scheduled execution
-     * @param eventData Event data from Somnia reactive network
      */
     function _onEvent(bytes memory) internal override nonReentrant {
         if (!isActive) {
