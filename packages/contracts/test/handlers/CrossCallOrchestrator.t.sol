@@ -48,8 +48,8 @@ contract CrossCallOrchestratorTest is Test {
     function testEnqueueMultipleCalls() public {
         bytes memory callData = abi.encodeWithSignature("doSomething()");
         
-        vm.prank(admin);
         for (uint256 i = 0; i < 5; i++) {
+            vm.prank(admin);
             orchestrator.enqueueCall(address(target), callData);
         }
 
@@ -114,8 +114,8 @@ contract CrossCallOrchestratorTest is Test {
     function testQueueFull() public {
         bytes memory callData = abi.encodeWithSignature("doSomething()");
         
-        vm.prank(admin);
         for (uint256 i = 0; i < 10; i++) {
+            vm.prank(admin);
             orchestrator.enqueueCall(address(target), callData);
         }
 
