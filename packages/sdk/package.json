@@ -3,6 +3,26 @@
   "version": "0.1.0",
   "description": "TypeScript SDK for deploying and managing Somnia reactive handlers",
   "license": "MIT",
+  "author": "Icekid",
+  "homepage": "https://github.com/icekidtech/somnia-react-autonomous#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/icekidtech/somnia-react-autonomous.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/icekidtech/somnia-react-autonomous/issues"
+  },
+  "keywords": [
+    "somnia",
+    "reactive",
+    "handlers",
+    "ethereum",
+    "defi",
+    "automation",
+    "sdk",
+    "typescript"
+  ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -23,7 +43,9 @@
       "types": "./dist/decoders/index.d.ts"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
@@ -33,6 +55,10 @@
     "format": "prettier --write 'src/**/*.ts'",
     "format:check": "prettier --check 'src/**/*.ts'",
     "type-check": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
   },
   "dependencies": {
     "ethers": "^6.9.0"

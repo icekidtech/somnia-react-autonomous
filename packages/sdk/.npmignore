@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Development
+src/
+test/
+docs/
+coverage/
+.eslintrc.json
+.prettierrc.json
+tsconfig.json
+vitest.config.ts
+tsup.config.ts
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+.github/
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+README.md
+LICENSE
+*.md
+dist.js.map
