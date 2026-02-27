@@ -16,9 +16,14 @@ contract MockImplementation is BaseReactiveHandler {
 // Mock implementation v2
 contract MockImplementationV2 is BaseReactiveHandler {
     uint256 public version = 2;
+    bool public active = false;
 
-    function _onEvent(bytes memory eventData) internal override {
+    function _onEvent(bytes memory) internal override {
         _emitSuccess("v2_event");
+    }
+
+    function setActive(bool _active) external {
+        active = _active;
     }
 }
 
