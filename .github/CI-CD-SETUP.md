@@ -13,17 +13,16 @@ The project uses GitHub Actions for automated testing, linting, coverage reporti
 **Triggers:** Push to `main`/`develop` branches, Pull Requests to `main`/`develop`
 
 **Jobs:**
+
 - **test-solidity**: Runs Foundry smart contract tests with coverage
   - Installs Foundry toolchain
   - Runs `forge test --via-ir`
   - Generates LCOV coverage report
-  
 - **test-typescript**: Runs TypeScript SDK tests
   - Installs Node.js 18 and pnpm 8
   - Runs type checking: `pnpm --filter sdk type-check`
   - Runs linting: `pnpm run lint:ts`
   - Runs tests: `pnpm run test:sdk` (88 tests with 85.31% coverage)
-  
 - **test-hardhat**: Runs Hardhat tests for contract integration testing
   - Installs dependencies
   - Runs `pnpm run test:hardhat`
@@ -33,13 +32,12 @@ The project uses GitHub Actions for automated testing, linting, coverage reporti
 **Triggers:** Push to `main`/`develop` branches, Pull Requests to `main`/`develop`
 
 **Jobs:**
+
 - **lint-solidity**: Lints Solidity code with Solhint
   - Checks all `.sol` files in `packages/contracts/src/`
-  
 - **lint-typescript**: Performs type checking and linting
   - Type checking: `pnpm --filter sdk type-check`
   - ESLint: `pnpm run lint:ts`
-  
 - **format-check**: Verifies code formatting with Prettier
   - Checks `pnpm run format:check`
 
@@ -48,6 +46,7 @@ The project uses GitHub Actions for automated testing, linting, coverage reporti
 **Triggers:** Push to `main`/`develop` branches, Weekly schedule (Sundays at midnight UTC)
 
 **Jobs:**
+
 - Generates test coverage reports for both Solidity and TypeScript
 - Uploads coverage data to Codecov for tracking
   - Solidity: Forge coverage LCOV report
@@ -60,11 +59,13 @@ The project uses GitHub Actions for automated testing, linting, coverage reporti
 
 **Triggers:** Push of git tags matching `v*.*.*` pattern (e.g., `v0.1.0`)
 
-**Permissions:** 
+**Permissions:**
+
 - Write access to contents (for GitHub releases)
 - Write access to packages (for npm publishing)
 
 **Jobs:**
+
 1. **Build & Test**
    - Runs full test suite: `pnpm test`
    - Builds all packages: `pnpm build`
@@ -90,9 +91,11 @@ The project uses GitHub Actions for automated testing, linting, coverage reporti
 You must set these secrets in your GitHub repository settings:
 
 #### `NPM_TOKEN`
+
 **Purpose:** Authenticate with npm registry for package publishing
 
 **How to Create:**
+
 1. Go to https://www.npmjs.com/settings/~token
 2. Create a new "Granular Access Token"
 3. Permissions needed:
@@ -102,6 +105,7 @@ You must set these secrets in your GitHub repository settings:
 4. Copy the token
 
 **How to Add to GitHub:**
+
 1. Go to `Settings` → `Secrets and variables` → `Actions`
 2. Click "New repository secret"
 3. Name: `NPM_TOKEN`
@@ -109,6 +113,7 @@ You must set these secrets in your GitHub repository settings:
 5. Click "Add secret"
 
 #### `GITHUB_TOKEN`
+
 **Status:** Automatically provided by GitHub Actions, no manual setup needed
 
 This token allows automatic release creation and gh-pages deployment.
@@ -169,6 +174,7 @@ git push origin v0.1.0
 #### Step 2: Verify All Checks Pass
 
 The `publish` workflow will:
+
 - ✅ Check out code
 - ✅ Install Foundry & dependencies
 - ✅ Run full test suite
@@ -190,6 +196,7 @@ npm install @somnia-react/autonomous-sdk@0.1.0
 ```
 
 Within a few minutes:
+
 - 📦 Package available on npm: https://www.npmjs.com/package/@somnia-react/autonomous-sdk
 - 📚 Documentation deployed: https://somnia-react.dev
 - 📄 GitHub Release created with release notes
@@ -205,6 +212,7 @@ git push origin v0.1.0-beta.1
 ```
 
 Then install as:
+
 ```bash
 npm install @somnia-react/autonomous-sdk@0.1.0-beta.1
 ```
@@ -231,14 +239,17 @@ You can view the status of all workflows in the GitHub Actions tab:
 ### Common Issues:
 
 **"pnpm not found"**
+
 - Caused by: Old action-setup version
 - Solution: Update to `pnpm/action-setup@v2`
 
 **"npm ERR! 401 Unauthorized"**
+
 - Caused by: Invalid or expired NPM_TOKEN
 - Solution: Regenerate token and update GitHub secret
 
 **"Test failures on CI but passing locally"**
+
 - Caused by: Environment differences, race conditions
 - Solution: Check log output, ensure deterministic tests
 

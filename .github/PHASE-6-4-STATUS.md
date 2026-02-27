@@ -26,19 +26,23 @@ Pre-Publishing Checklist:
 **You have 3 immediate actions needed to publish:**
 
 ### 1️⃣ Generate npm Token (5 minutes)
+
 ```bash
 Visit: https://www.npmjs.com/settings/~token
 OR use: npm login && npm token create
 ```
+
 → You'll get a token like: `npm_XXXXXXXXXXXXXXXXXXXXXXXXXXXX`
 
 ### 2️⃣ Add Token to GitHub Secrets (1 minute)
+
 ```
 Go to: Settings → Secrets and variables → Actions
 Add: NPM_TOKEN = (your token)
 ```
 
 ### 3️⃣ Create & Push Release Tag (1 minute)
+
 ```bash
 cd /home/icekid/Projects/somnia-react-autonomous
 git tag -a v0.1.0 -m "Release v0.1.0"
@@ -94,7 +98,7 @@ I've created 3 comprehensive guides for Phase 6.4:
    - 9 steps with time estimates
    - All commands ready to copy-paste
 
-2. **PHASE-6-4-GUIDE.md** 
+2. **PHASE-6-4-GUIDE.md**
    - Detailed step-by-step guide
    - Troubleshooting section
    - Post-publishing verification
@@ -110,22 +114,23 @@ I've created 3 comprehensive guides for Phase 6.4:
 
 ## ✨ Key Metrics
 
-| Metric | Value | Status |
-|--------|-------|--------|
-| Tests Passing | 88/88 | ✅ 100% |
-| Code Coverage | 85.31% | ✅ v8 |
-| ESLint | 0 errors | ✅ |
-| TypeScript | 0 errors | ✅ |
-| Build Status | Success | ✅ |
-| Workflows | 4/4 ready | ✅ |
-| Documentation | Complete | ✅ |
-| Publishing | Ready | ⏳ NPM token needed |
+| Metric        | Value     | Status              |
+| ------------- | --------- | ------------------- |
+| Tests Passing | 88/88     | ✅ 100%             |
+| Code Coverage | 85.31%    | ✅ v8               |
+| ESLint        | 0 errors  | ✅                  |
+| TypeScript    | 0 errors  | ✅                  |
+| Build Status  | Success   | ✅                  |
+| Workflows     | 4/4 ready | ✅                  |
+| Documentation | Complete  | ✅                  |
+| Publishing    | Ready     | ⏳ NPM token needed |
 
 ---
 
 ## 🎯 Action Items
 
 ### Immediate (Required)
+
 - [ ] **Generate npm token** (~5 min)
   - Visit: https://www.npmjs.com/settings/~token
   - Create: Granular Access Token
@@ -140,6 +145,7 @@ I've created 3 comprehensive guides for Phase 6.4:
   - Workflow auto-triggers on tag push
 
 ### Optional (After Publishing)
+
 - [ ] Test installation in new project
 - [ ] Verify GitHub Release created
 - [ ] Announce release (social media, docs, etc.)
@@ -149,6 +155,7 @@ I've created 3 comprehensive guides for Phase 6.4:
 ## 📖 Quick Reference
 
 **Most Important Links:**
+
 ```
 📋 Publishing Checklist: .github/PHASE-6-4-CHECKLIST.md ← FOLLOW THIS
 📚 Detailed Guide:       .github/PHASE-6-4-GUIDE.md
@@ -157,6 +164,7 @@ I've created 3 comprehensive guides for Phase 6.4:
 ```
 
 **External Links:**
+
 ```
 npm Token generator: https://www.npmjs.com/settings/~token
 GitHub Secrets:      https://github.com/icekidtech/somnia-react-autonomous/settings/secrets/actions
@@ -169,6 +177,7 @@ GitHub Releases:     https://github.com/icekidtech/somnia-react-autonomous/relea
 ## 🚀 Ready to Publish?
 
 ### Yes, I'm Ready! → Follow PHASE-6-4-CHECKLIST.md
+
 1. Generate npm token (5 min)
 2. Add to GitHub secrets (1 min)
 3. Create release tag (1 min)
@@ -176,6 +185,7 @@ GitHub Releases:     https://github.com/icekidtech/somnia-react-autonomous/relea
 5. Verify package (2 min)
 
 ### Need More Info? → Read PHASE-6-4-GUIDE.md
+
 - Detailed step-by-step instructions
 - Troubleshooting guide
 - Post-publishing verification
@@ -219,6 +229,7 @@ Ready to proceed?          YES ✅
 ## 📞 Having Issues?
 
 **Check the troubleshooting section in PHASE-6-4-GUIDE.md:**
+
 - npm ERR! 401 Unauthorized
 - Token not appearing in secrets
 - Workflow failing
@@ -229,7 +240,7 @@ Ready to proceed?          YES ✅
 
 ## 🎉 Phase 6.4 Ready!
 
-Everything is prepared for npm publishing. 
+Everything is prepared for npm publishing.
 
 **Your next action:** Follow **PHASE-6-4-CHECKLIST.md** starting with Step 1 (Generate npm token).
 

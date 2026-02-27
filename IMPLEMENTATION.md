@@ -7,6 +7,7 @@
 ---
 
 ## Table of Contents
+
 1. [Project Structure](#project-structure)
 2. [Tech Stack Summary](#tech-stack-summary)
 3. [Phase 1: Scaffold & Setup](#phase-1-scaffold--setup)
@@ -126,53 +127,59 @@
 ## Tech Stack Summary
 
 ### **Solidity & Contracts**
-| Component | Tool | Version |
-|-----------|------|---------|
-| Compiler | Solidity | ^0.8.20–^0.8.30 |
-| Build Framework | Foundry | Latest |
-| Secondary Framework | Hardhat | ^2.20.0 |
-| Standard Library | OpenZeppelin Contracts | ^5.0.0 |
-| Testing (Primary) | Foundry Forge | Native |
-| Testing (Integration) | Hardhat Testing | Ethers v6 |
-| Linting | Solhint | ^4.0.0 |
+
+| Component             | Tool                   | Version         |
+| --------------------- | ---------------------- | --------------- |
+| Compiler              | Solidity               | ^0.8.20–^0.8.30 |
+| Build Framework       | Foundry                | Latest          |
+| Secondary Framework   | Hardhat                | ^2.20.0         |
+| Standard Library      | OpenZeppelin Contracts | ^5.0.0          |
+| Testing (Primary)     | Foundry Forge          | Native          |
+| Testing (Integration) | Hardhat Testing        | Ethers v6       |
+| Linting               | Solhint                | ^4.0.0          |
 
 ### **TypeScript & SDK**
-| Component | Tool | Version |
-|-----------|------|---------|
-| Runtime | Node.js | ≥18.0.0 |
-| Package Manager | pnpm | ≥8.0.0 |
-| Language | TypeScript | ^5.0.0 |
-| Build Tool | tsup | ^8.0.0 |
-| Testing | Vitest | ^1.0.0 |
-| ABI Types | abitype | ^1.0.0 |
-| Linting | ESLint | ^8.0.0 |
-| Formatting | Prettier | ^3.0.0 |
+
+| Component       | Tool       | Version |
+| --------------- | ---------- | ------- |
+| Runtime         | Node.js    | ≥18.0.0 |
+| Package Manager | pnpm       | ≥8.0.0  |
+| Language        | TypeScript | ^5.0.0  |
+| Build Tool      | tsup       | ^8.0.0  |
+| Testing         | Vitest     | ^1.0.0  |
+| ABI Types       | abitype    | ^1.0.0  |
+| Linting         | ESLint     | ^8.0.0  |
+| Formatting      | Prettier   | ^3.0.0  |
 
 ### **Documentation**
-| Component | Tool | Version |
-|-----------|------|---------|
-| Site Generator | VitePress | ^1.0.0 |
-| API Documentation | Typedoc | ^0.25.0 |
-| Solidity Docs | Natspec | Native |
+
+| Component         | Tool      | Version |
+| ----------------- | --------- | ------- |
+| Site Generator    | VitePress | ^1.0.0  |
+| API Documentation | Typedoc   | ^0.25.0 |
+| Solidity Docs     | Natspec   | Native  |
 
 ### **CI/CD & Quality**
-| Component | Tool | Purpose |
-|-----------|------|---------|
-| CI Pipeline | GitHub Actions | Lint → Test → Coverage |
-| Coverage | Codecov | Badge & gating |
-| Code Quality | Solhint + ESLint | Static analysis |
+
+| Component    | Tool             | Purpose                |
+| ------------ | ---------------- | ---------------------- |
+| CI Pipeline  | GitHub Actions   | Lint → Test → Coverage |
+| Coverage     | Codecov          | Badge & gating         |
+| Code Quality | Solhint + ESLint | Static analysis        |
 
 ---
 
 ## Phase 1: Scaffold & Setup
 
 ### Goals
+
 - Initialize monorepo structure
 - Set up package managers and workspace config
 - Create shared configurations (prettier, eslint, tsconfig)
 - Initialize Git & GitHub
 
 ### Deliverables
+
 - ✅ Monorepo with pnpm workspaces
 - ✅ Root package.json with shared scripts
 - ✅ Shared linting & formatting config
@@ -180,6 +187,7 @@
 - ✅ .env.example file created
 
 ### Commands to Execute
+
 ```bash
 # Root setup
 pnpm init
@@ -199,6 +207,7 @@ cd packages/docs && npm init -y
 ## Phase 2: Solidity Contracts
 
 ### 2.1 Foundry Initialization
+
 ```bash
 cd packages/contracts
 forge init --no-git --no-commit
@@ -206,29 +215,30 @@ forge init --no-git --no-commit
 
 ### 2.2 Core Contracts (MVP Priority Order)
 
-| Contract | Complexity | Deps | Lines | Tests |
-|----------|-----------|------|-------|-------|
-| `BaseReactiveHandler.sol` | ★★ | SomniaEventHandler | 80–120 | 10+ |
-| `EventFilterThrottle.sol` | ★★ | BaseReactiveHandler | 50–80 | 8+ |
-| `AutoCompoundHandler.sol` | ★★★ | Base, OpenZeppelin ERC20 | 100–150 | 12+ |
-| `CronLikeScheduler.sol` | ★★★ | Base | 120–180 | 10+ |
-| `LiquidationGuardian.sol` | ★★★★ | Base, price oracle patterns | 150–200 | 15+ |
-| `CrossCallOrchestrator.sol` | ★★★★ | Base | 180–250 | 12+ |
-| `UpgradeableReactiveProxy.sol` | ★★★ | Base, OpenZeppelin UUPSUpgradeable | 100–140 | 8+ |
+| Contract                       | Complexity | Deps                               | Lines   | Tests |
+| ------------------------------ | ---------- | ---------------------------------- | ------- | ----- |
+| `BaseReactiveHandler.sol`      | ★★         | SomniaEventHandler                 | 80–120  | 10+   |
+| `EventFilterThrottle.sol`      | ★★         | BaseReactiveHandler                | 50–80   | 8+    |
+| `AutoCompoundHandler.sol`      | ★★★        | Base, OpenZeppelin ERC20           | 100–150 | 12+   |
+| `CronLikeScheduler.sol`        | ★★★        | Base                               | 120–180 | 10+   |
+| `LiquidationGuardian.sol`      | ★★★★       | Base, price oracle patterns        | 150–200 | 15+   |
+| `CrossCallOrchestrator.sol`    | ★★★★       | Base                               | 180–250 | 12+   |
+| `UpgradeableReactiveProxy.sol` | ★★★        | Base, OpenZeppelin UUPSUpgradeable | 100–140 | 8+    |
 
 ### 2.3 Implementation Strategy
 
 **BaseReactiveHandler.sol** (foundation)
+
 ```solidity
 abstract contract BaseReactiveHandler is SomniaEventHandler {
     // Reentrancy guard
     // Gas limit check
     // Event emission for success/error
     // Common event decoding helpers
-    
+
     modifier nonReentrant() { ... }
     modifier gasLimitCheck(uint256 minGasRequired) { ... }
-    
+
     function _onEvent(...) virtual abstract;
     function _emitError(bytes reason) internal;
     function _emitSuccess(string memory action) internal;
@@ -236,18 +246,20 @@ abstract contract BaseReactiveHandler is SomniaEventHandler {
 ```
 
 **Handler Patterns** (inherit from BaseReactiveHandler)
+
 - **AutoCompoundHandler**: Listen to reward token transfers → call compound()
 - **LiquidationGuardian**: Listen to price updates → check health → liquidate if needed
 - **CronLikeScheduler**: Track last execution timestamp → execute if interval elapsed
 - **EventFilterThrottle**: Count events in a sliding window → skip if > threshold
-- **CrossCallOrchestrator**: Queue external calls → execute atomically in _onEvent
+- **CrossCallOrchestrator**: Queue external calls → execute atomically in \_onEvent
 - **UpgradeableReactiveProxy**: UUPS proxy for upgradeable handlers
 
 ### 2.4 Testing Strategy (Foundry)
+
 - **Unit tests**: Each contract's core logic
 - **Integration tests**: Handlers working with mock external contracts
 - **Fuzz tests**: Random inputs to catch edge cases
-- **Gas tests**: Ensure <250k gas per _onEvent call
+- **Gas tests**: Ensure <250k gas per \_onEvent call
 - **Reentrancy tests**: Confirm guard works
 
 Target: 85%+ coverage
@@ -259,20 +271,24 @@ Target: 85%+ coverage
 ### 3.1 SDK Structure
 
 **Deployment Module** (`deployment/`)
+
 - `deployer.ts`: Deploy contracts with verification
 - `types.ts`: Typed deployment configs
 - `verify.ts`: Etherscan/block explorer verification
 
 **Subscriptions Module** (`subscriptions/`)
+
 - `subscription-builder.ts`: Fluent API to create subscriptions
 - `types.ts`: Subscription interfaces
 - `validators.ts`: Validate event signatures, handler addresses
 
 **Decoders Module** (`decoders/`)
+
 - `event-decoder.ts`: Parse event logs into typed objects
 - Support common handler events (error, success, execution)
 
 **ABIs Module** (`abis/`)
+
 - Generated from contract ABIs using abitype
 - Type-safe access to function signatures
 
@@ -305,6 +321,7 @@ const events = decoder.parse(logs);
 ```
 
 ### 3.3 Testing (Vitest)
+
 - Unit tests for builders, decoders, validators
 - Mock Somnia SDK interactions
 - Integration tests with local Hardhat fork
@@ -317,6 +334,7 @@ Target: 85%+ coverage
 ## Phase 4: Testing & Quality
 
 ### 4.1 Solidity Tests
+
 ```bash
 cd packages/contracts
 forge test                    # Run all tests
@@ -325,6 +343,7 @@ forge test --fuzz-runs 10000 # Fuzz testing
 ```
 
 ### 4.2 TypeScript Tests
+
 ```bash
 cd packages/sdk
 pnpm test                     # Run Vitest
@@ -334,18 +353,21 @@ pnpm test:coverage          # Coverage report
 ### 4.3 Linting & Formatting
 
 **Solidity**
+
 ```bash
 pnpm solhint packages/contracts/src/**/*.sol
 pnpm prettier --write packages/contracts/src/**/*.sol
 ```
 
 **TypeScript**
+
 ```bash
 pnpm eslint packages/sdk/src/**/*.ts
 pnpm prettier --write packages/sdk/src/**/*.ts
 ```
 
 ### 4.4 Coverage Gates
+
 - Solidity: ≥85% lines covered (Foundry + Hardhat coverage merge)
 - TypeScript: ≥85% lines covered
 - Browser coverage at GitHub Actions → Codecov badge
@@ -357,32 +379,38 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ### 5.1 Documentation Structure
 
 **Getting Started** (`getting-started.md`)
+
 - Installation: `pnpm add @somnia-react/autonomous`
 - Quick 5-minute example (AutoCompound)
 - Prerequisites (Foundry, Hardhat, Somnia SDK)
 
 **Guides** (`guides/`)
+
 - One comprehensive guide per handler
 - Step-by-step walkthrough
 - Copy-paste deployment code
 - Common pitfalls & fixes
 
 **Security** (`security.md`)
+
 - Reentrancy considerations
 - Gas limit best practices
 - Trusted oracle assumptions
 - Audit recommendations
 
 **API Reference** (`api-reference.md`)
+
 - Auto-generated from Natspec + Typedoc
 - Link to source code
 
 **Examples** (`examples/`)
+
 - Production-like Solidity examples (AutoCompoundVault.sol, etc.)
 - TypeScript deployment scripts
 - All ready to fork & customize
 
 ### 5.2 Documentation Site (VitePress)
+
 - Hosted on GitHub Pages (auto-deploy from docs/)
 - Dark mode + light mode
 - Search enabled
@@ -395,6 +423,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ### 6.1 GitHub Actions Workflows
 
 **lint.yml** (on push to main/PR)
+
 ```yaml
 - Solhint on contracts/src
 - ESLint on sdk/src
@@ -403,6 +432,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ```
 
 **test.yml** (on push to main/PR)
+
 ```yaml
 - Foundry tests (contracts)
 - Hardhat integration tests
@@ -411,6 +441,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ```
 
 **coverage.yml** (nightly + on release)
+
 ```yaml
 - Collect coverage from both Solidity & TS
 - Upload to Codecov
@@ -418,7 +449,8 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 - Fail if coverage < 85%
 ```
 
-**publish.yml** (on git tag v*.*.*)
+**publish.yml** (on git tag v*.*.\*)
+
 ```yaml
 - Build Solidity contracts (ABI extraction)
 - Build TypeScript SDK (tsup)
@@ -434,6 +466,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 **Package name**: `@somnia-react/autonomous`
 
 **Package exports** (`package.json`):
+
 ```json
 {
   "exports": {
@@ -448,11 +481,13 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ### 6.3 Versioning & Changelog
 
 **SemVer**: MAJOR.MINOR.PATCH
+
 - MAJOR: Breaking changes (new Somnia SDK version, contract interface change)
 - MINOR: New handlers, new helpers, backwards-compatible
 - PATCH: Bug fixes, doc updates, security patches
 
 **Changelog** (`CHANGELOG.md`)
+
 - Keep updated with every version
 - Highlight breaking changes in red
 - Link to GitHub issues / PRs
@@ -462,6 +497,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ## Key Dependencies
 
 ### Contracts (src/package.json)
+
 ```json
 {
   "devDependencies": {
@@ -473,6 +509,7 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ```
 
 ### SDK (src/package.json)
+
 ```json
 {
   "devDependencies": {
@@ -490,32 +527,38 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ## Success Criteria (Phase Completion)
 
 ### Phase 1 ✅
+
 - [x] Monorepo initialized & working
 - [x] All workspaces can reference each other
 - [x] Linting & formatting config applied
 
 ### Phase 2 ✅
+
 - [x] All 7 contracts implemented & tested
 - [x] 85%+ Solidity coverage
-- [x] Gas benchmarks < 250k per _onEvent
+- [x] Gas benchmarks < 250k per \_onEvent
 
 ### Phase 3 ✅
+
 - [x] All SDK modules functional (deployment, subscriptions, decoders)
 - [x] 85%+ TS coverage (actual: 85.31% statements)
 - [x] Type-safe APIs (full TypeScript with strict mode)
 
 ### Phase 4 ✅
+
 - [x] All 88 tests passing (31 subscriptions + 21 integration + 18 decoders + 18 deployment)
 - [x] CI integration ready
 - [x] Coverage reporting configured (HTML + LCOV)
 
 ### Phase 5 ✅
+
 - [x] Full SDK documentation (4 markdown files + README)
 - [x] Module guides with examples
 - [x] API reference complete
 - [x] Integration tests for real-world scenarios
 
 ### Phase 6 ✅
+
 - [ ] npm package published
 - [ ] GitHub Actions working
 - [ ] Auto-deploy to Pages on release
@@ -524,31 +567,34 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 
 ## Timeline Estimate
 
-| Phase | Effort | Timeline |
-|-------|--------|----------|
-| 1. Scaffold | 2 days | Week 1 |
-| 2. Solidity | 10 days | Weeks 2–3 |
-| 3. TypeScript SDK | 5 days | Weeks 3–4 |
-| 4. Testing & QA | 3 days | Week 4 |
-| 5. Documentation | 4 days | Week 5 |
-| 6. CI/CD & Publish | 2 days | Week 5–6 |
-| **Total MVP** | **26 days** | **6 weeks** |
+| Phase              | Effort      | Timeline    |
+| ------------------ | ----------- | ----------- |
+| 1. Scaffold        | 2 days      | Week 1      |
+| 2. Solidity        | 10 days     | Weeks 2–3   |
+| 3. TypeScript SDK  | 5 days      | Weeks 3–4   |
+| 4. Testing & QA    | 3 days      | Week 4      |
+| 5. Documentation   | 4 days      | Week 5      |
+| 6. CI/CD & Publish | 2 days      | Week 5–6    |
+| **Total MVP**      | **26 days** | **6 weeks** |
 
 ---
 
 ## Maintenance & Evolution
 
 ### Ongoing
+
 - Monitor Somnia SDK for breaking changes
 - Respond to community PRs / issues
 - Monthly security review
 
 ### v0.2.0 (3 months post-launch)
+
 - Advanced composability patterns
 - More filters & throttles
 - Enhanced test coverage & docs
 
 ### v1.0.0 (6 months post-launch)
+
 - Community-contributed handlers
 - Formal audit (if funded)
 - Ecosystem promotion with Somnia
@@ -556,8 +602,8 @@ pnpm prettier --write packages/sdk/src/**/*.ts
 ---
 
 ## References
+
 - [Original PRD](./somnia-react%20autonomous.md)
 - [Foundry Docs](https://book.getfoundry.sh)
 - [OpenZeppelin Contracts](https://docs.openzeppelin.com/contracts/)
 - [VitePress Docs](https://vitepress.dev)
-

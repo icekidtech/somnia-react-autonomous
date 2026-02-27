@@ -38,6 +38,7 @@ pnpm test
 ```
 
 Checklist:
+
 - [x] 88/88 tests passing
 - [x] 85.31% coverage
 - [x] 0 ESLint errors
@@ -69,7 +70,7 @@ npm token create --read-only false --access public
 3. Select: **Granular Access Token**
 4. Fill in:
    - **Token name:** `GitHub Actions - somnia-react-autonomous`
-   - **Permissions:** 
+   - **Permissions:**
      - ✅ `write:packages` (publish packages)
      - ✅ `read:packages` (verify packages)
    - **Packages and scopes:**
@@ -104,6 +105,7 @@ gh secret set NPM_TOKEN -b "your-npm-token-here" \
 ```
 
 **Verify the secret was added:**
+
 - Go to: Repository Settings → Secrets and variables → Actions
 - You should see `NPM_TOKEN` in the list (value hidden)
 
@@ -172,6 +174,7 @@ git ls-remote --tags origin | grep v0.1.0
 ```
 
 **What happens next:**
+
 - GitHub detects the tag push
 - Automatically triggers the "Publish" workflow
 - Workflow runs all tests, builds packages, publishes to npm
@@ -191,6 +194,7 @@ Now watch the publish workflow run:
 3. **Click on the workflow** to see detailed logs
 
 4. **Expected execution timeline:**
+
    ```
    Checkout code                    ~10s
    Install Foundry                  ~30s
@@ -209,18 +213,20 @@ Now watch the publish workflow run:
 5. **What to look for in logs:**
 
    ✅ **Success indicators:**
+
    ```
    Test Files  4 passed (4)
    Tests  88 passed (88)
-   
+
    ✨ built packages successfully
-   
+
    npm notice published @somnia-react/autonomous-sdk@0.1.0
-   
+
    ✅ Create GitHub Release
    ```
 
    ❌ **Failure indicators:**
+
    ```
    Tests FAILED
    npm ERR! 401 Unauthorized
@@ -238,10 +244,10 @@ npm view @somnia-react/autonomous-sdk
 # Expected output:
 # @somnia-react/autonomous-sdk@0.1.0
 # TypeScript SDK for deploying and managing Somnia reactive handlers
-# 
+#
 # dist-tags:
 # latest: 0.1.0
-# 
+#
 # published <timestamp>
 ```
 
@@ -293,6 +299,7 @@ GitHub should have automatically created a release:
 **Cause:** Invalid or expired NPM_TOKEN
 
 **Solution:**
+
 1. Generate a new token (see Step 2 above)
 2. Update NPM_TOKEN in GitHub Secrets
 3. Re-run workflow by recreating the tag:
@@ -308,6 +315,7 @@ GitHub should have automatically created a release:
 **Cause:** Package name mismatch or registry issue
 
 **Solution:**
+
 - Verify package name: `@somnia-react/autonomous-sdk`
 - Check npm is responding: `npm ping`
 - Wait a few minutes for npm CDN to sync
@@ -317,6 +325,7 @@ GitHub should have automatically created a release:
 **Cause:** Environment difference or caching issue
 
 **Solution:**
+
 1. Check workflow logs for specific error
 2. Common fixes:
    - Clear npm cache: `npm cache clean --force`
@@ -329,6 +338,7 @@ GitHub should have automatically created a release:
 **Cause:** Missing dependencies or incorrect exports
 
 **Solution:**
+
 1. Verify package.json exports are correct:
    ```json
    "exports": {
@@ -393,16 +403,19 @@ git push origin v0.2.0
 **A successful release should show:**
 
 ✅ Published on npm:
+
 ```
 https://www.npmjs.com/package/@somnia-react/autonomous-sdk
 ```
 
 ✅ Installable:
+
 ```bash
 npm install @somnia-react/autonomous-sdk@0.1.0
 ```
 
 ✅ In GitHub:
+
 ```
 8 releases
 1 tag: v0.1.0
@@ -410,9 +423,10 @@ npm install @somnia-react/autonomous-sdk@0.1.0
 ```
 
 ✅ Working imports:
+
 ```javascript
-import { deployEventFilterThrottle } from '@somnia-react/autonomous-sdk/deployment';
-import { subscriptionBuilder } from '@somnia-react/autonomous-sdk/subscriptions';
+import { deployEventFilterThrottle } from "@somnia-react/autonomous-sdk/deployment";
+import { subscriptionBuilder } from "@somnia-react/autonomous-sdk/subscriptions";
 ```
 
 ---
@@ -422,6 +436,7 @@ import { subscriptionBuilder } from '@somnia-react/autonomous-sdk/subscriptions'
 After successful publishing:
 
 1. **Verify in real project:**
+
    ```bash
    npm install @somnia-react/autonomous-sdk
    ```
@@ -439,12 +454,14 @@ After successful publishing:
 ## 📞 Quick Reference
 
 **Key URLs:**
+
 - npm package: https://www.npmjs.com/package/@somnia-react/autonomous-sdk
 - GitHub repo: https://github.com/icekidtech/somnia-react-autonomous
 - GitHub Actions: https://github.com/icekidtech/somnia-react-autonomous/actions
 - GitHub Releases: https://github.com/icekidtech/somnia-react-autonomous/releases
 
 **Key Commands:**
+
 ```bash
 # Check npm package
 npm view @somnia-react/autonomous-sdk
@@ -460,6 +477,7 @@ npm list @somnia-react/autonomous-sdk
 ```
 
 **Time Investment:**
+
 - Generate token: 5 minutes
 - Add to GitHub secrets: 1 minute
 - Create & push tag: 1 minute

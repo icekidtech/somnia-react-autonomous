@@ -13,14 +13,14 @@ The subscriptions module provides a type-safe subscription builder and factory f
 Build complex subscriptions with a chainable fluent interface.
 
 ```typescript
-import { SubscriptionBuilder } from '@somnia-react/autonomous-sdk/subscriptions';
+import { SubscriptionBuilder } from "@somnia-react/autonomous-sdk/subscriptions";
 
-const config = new SubscriptionBuilder('0x1234...')
-  .onEvent('Transfer(indexed address,indexed address,uint256)')
+const config = new SubscriptionBuilder("0x1234...")
+  .onEvent("Transfer(indexed address,indexed address,uint256)")
   .fromChain(1)
   .toChain(42161)
-  .withAddress('0xdac17f958d2ee523a2206206994597c13d831ec7') // USDT
-  .withTopic('0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef')
+  .withAddress("0xdac17f958d2ee523a2206206994597c13d831ec7") // USDT
+  .withTopic("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef")
   .build();
 ```
 
@@ -31,7 +31,7 @@ const config = new SubscriptionBuilder('0x1234...')
 Initialize builder with handler address.
 
 ```typescript
-const builder = new SubscriptionBuilder('0x1234567890123456789012345678901234567890');
+const builder = new SubscriptionBuilder("0x1234567890123456789012345678901234567890");
 ```
 
 ---
@@ -41,10 +41,11 @@ const builder = new SubscriptionBuilder('0x1234567890123456789012345678901234567
 Set the event signature to listen for.
 
 ```typescript
-builder.onEvent('Swap(address,uint256,uint256,uint256,uint256,address)');
+builder.onEvent("Swap(address,uint256,uint256,uint256,uint256,address)");
 ```
 
 **Signature Format:**
+
 - Basic: `EventName(type1,type2)`
 - Indexed: `Transfer(indexed address,indexed address,uint256)`
 - Tuples: `ComplexEvent((address,uint256),bytes32)`
@@ -57,7 +58,7 @@ builder.onEvent('Swap(address,uint256,uint256,uint256,uint256,address)');
 Set source chain ID.
 
 ```typescript
-builder.fromChain(1);  // Ethereum
+builder.fromChain(1); // Ethereum
 ```
 
 Supported values: Any positive integer less than 10,000.
@@ -69,7 +70,7 @@ Supported values: Any positive integer less than 10,000.
 Set target chain ID.
 
 ```typescript
-builder.toChain(42161);  // Arbitrum
+builder.toChain(42161); // Arbitrum
 ```
 
 ---
@@ -80,12 +81,12 @@ Filter events by source contract address.
 
 ```typescript
 // Single address
-builder.withAddress('0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48');
+builder.withAddress("0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48");
 
 // Multiple addresses
 builder.withAddress([
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
-  '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+  "0xdAC17F958D2ee523a2206206994597C13D831ec7",
 ]);
 ```
 
@@ -98,7 +99,7 @@ Validate all addresses before building.
 Filter events by topic hash.
 
 ```typescript
-builder.withTopic('0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef');
+builder.withTopic("0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef");
 ```
 
 ---
@@ -124,7 +125,7 @@ Create subscription for auto-compound handler.
 
 ```typescript
 const subscription = createAutoCompoundSubscription(
-  '0x1234567890123456789012345678901234567890',
+  "0x1234567890123456789012345678901234567890",
   150000 // target utilization
 );
 ```
@@ -139,8 +140,8 @@ Create subscription for event filter throttle handler.
 
 ```typescript
 const subscription = createEventFilterThrottleSubscription(
-  '0x1234567890123456789012345678901234567890', // handler
-  '0x...',                                        // source address
+  "0x1234567890123456789012345678901234567890", // handler
+  "0x...", // source address
   {
     maxEventsPerWindow: 100,
     windowSizeBlocks: 1000,
@@ -158,9 +159,9 @@ Create subscription for cron scheduler handler.
 
 ```typescript
 const subscription = createCronSchedulerSubscription(
-  '0x1234567890123456789012345678901234567890',
+  "0x1234567890123456789012345678901234567890",
   3600, // interval in seconds
-  'CronTick()'
+  "CronTick()"
 );
 ```
 
@@ -174,8 +175,8 @@ Create subscription for liquidation guardian handler.
 
 ```typescript
 const subscription = createLiquidationGuardianSubscription(
-  '0x1234567890123456789012345678901234567890',
-  'Liquidation(address,address,uint256)'
+  "0x1234567890123456789012345678901234567890",
+  "Liquidation(address,address,uint256)"
 );
 ```
 
@@ -189,7 +190,7 @@ Create subscription for cross-call orchestrator handler.
 
 ```typescript
 const subscription = createCrossCallOrchestratorSubscription(
-  '0x1234567890123456789012345678901234567890',
+  "0x1234567890123456789012345678901234567890",
   50 // maxQueueSize
 );
 ```
@@ -205,10 +206,10 @@ const subscription = createCrossCallOrchestratorSubscription(
 Validate event signature format.
 
 ```typescript
-import { isValidEventSignature } from '@somnia-react/autonomous-sdk/subscriptions';
+import { isValidEventSignature } from "@somnia-react/autonomous-sdk/subscriptions";
 
-if (isValidEventSignature('Transfer(indexed address,indexed address,uint256)')) {
-  console.log('Valid signature');
+if (isValidEventSignature("Transfer(indexed address,indexed address,uint256)")) {
+  console.log("Valid signature");
 }
 ```
 
@@ -219,10 +220,10 @@ if (isValidEventSignature('Transfer(indexed address,indexed address,uint256)')) 
 Validate Ethereum address format.
 
 ```typescript
-import { isValidAddress } from '@somnia-react/autonomous-sdk/subscriptions';
+import { isValidAddress } from "@somnia-react/autonomous-sdk/subscriptions";
 
-if (!isValidAddress('not-an-address')) {
-  console.error('Invalid address');
+if (!isValidAddress("not-an-address")) {
+  console.error("Invalid address");
 }
 ```
 
@@ -233,10 +234,10 @@ if (!isValidAddress('not-an-address')) {
 Validate chain ID range.
 
 ```typescript
-import { isValidChainId } from '@somnia-react/autonomous-sdk/subscriptions';
+import { isValidChainId } from "@somnia-react/autonomous-sdk/subscriptions";
 
 if (isValidChainId(1)) {
-  console.log('Valid chain ID');
+  console.log("Valid chain ID");
 }
 ```
 
@@ -249,19 +250,19 @@ Valid range: 1 to 9,999
 Validate complete subscription configuration.
 
 ```typescript
-import { validateSubscriptionConfig } from '@somnia-react/autonomous-sdk/subscriptions';
+import { validateSubscriptionConfig } from "@somnia-react/autonomous-sdk/subscriptions";
 
 const result = validateSubscriptionConfig({
-  handlerAddress: '0x...',
-  eventSignature: 'Transfer(indexed address,indexed address,uint256)',
+  handlerAddress: "0x...",
+  eventSignature: "Transfer(indexed address,indexed address,uint256)",
   sourceChainId: 1,
   targetChainId: 42161,
 });
 
 if (result.valid) {
-  console.log('Configuration is valid');
+  console.log("Configuration is valid");
 } else {
-  console.error('Error:', result.message);
+  console.error("Error:", result.message);
 }
 ```
 
@@ -275,12 +276,12 @@ Base subscription configuration.
 
 ```typescript
 interface SubscriptionConfig {
-  handlerAddress: string;       // Handler contract address
-  eventSignature: string;       // Event to listen for
-  sourceChainId?: number;       // Source chain
-  targetChainId?: number;       // Target chain
+  handlerAddress: string; // Handler contract address
+  eventSignature: string; // Event to listen for
+  sourceChainId?: number; // Source chain
+  targetChainId?: number; // Target chain
   filters?: SubscriptionFilter; // Event filters
-  id?: string;                  // Unique subscription ID
+  id?: string; // Unique subscription ID
 }
 ```
 
@@ -290,8 +291,8 @@ Event filtering options.
 
 ```typescript
 interface SubscriptionFilter {
-  address?: string | string[];  // Contract address(es)
-  topics?: string[];            // Topic hashes
+  address?: string | string[]; // Contract address(es)
+  topics?: string[]; // Topic hashes
 }
 ```
 
@@ -324,16 +325,17 @@ The subscription builder validates on each method call and throws clear errors:
 
 ```typescript
 try {
-  new SubscriptionBuilder('0x1234...')
-    .onEvent('InvalidSignature')  // Missing parentheses
+  new SubscriptionBuilder("0x1234...")
+    .onEvent("InvalidSignature") // Missing parentheses
     .build();
 } catch (error) {
-  console.error('Validation error:', error.message);
+  console.error("Validation error:", error.message);
   // Output: "Invalid event signature format"
 }
 ```
 
 Common errors:
+
 - `Invalid handler address` – Invalid address format
 - `Invalid event signature format` – Malformed event signature
 - `Invalid source chain ID` – Chain ID out of valid range
@@ -347,13 +349,13 @@ Common errors:
 ### Complex Multi-Filter Subscription
 
 ```typescript
-const subscription = new SubscriptionBuilder('0x1234...')
-  .onEvent('Swap(address,uint256,uint256,uint256,uint256,address)')
+const subscription = new SubscriptionBuilder("0x1234...")
+  .onEvent("Swap(address,uint256,uint256,uint256,uint256,address)")
   .fromChain(1)
   .toChain(42161)
   .withAddress([
-    '0xE592427A0AEce92De3Edee1F18E0157C05861564', // SwapRouter
-    '0x68b3465833fb72B5A828cCEEA84B0bA361f38421', // SwapRouter02
+    "0xE592427A0AEce92De3Edee1F18E0157C05861564", // SwapRouter
+    "0x68b3465833fb72B5A828cCEEA84B0bA361f38421", // SwapRouter02
   ])
   .build();
 ```
@@ -362,34 +364,34 @@ const subscription = new SubscriptionBuilder('0x1234...')
 
 ```typescript
 const throttle = createEventFilterThrottleSubscription(
-  '0x1234567890123456789012345678901234567890',
-  '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+  "0x1234567890123456789012345678901234567890",
+  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   {
     maxEventsPerWindow: 50,
     windowSizeBlocks: 1000,
   }
 );
 
-console.log('Subscription ID:', throttle.id);
+console.log("Subscription ID:", throttle.id);
 ```
 
 ### Validate Before Building
 
 ```typescript
-import { validateSubscriptionConfig } from '@somnia-react/autonomous-sdk/subscriptions';
+import { validateSubscriptionConfig } from "@somnia-react/autonomous-sdk/subscriptions";
 
 const config = {
-  handlerAddress: '0x1234...',
-  eventSignature: 'Transfer(indexed address,indexed address,uint256)',
+  handlerAddress: "0x1234...",
+  eventSignature: "Transfer(indexed address,indexed address,uint256)",
   sourceChainId: 1,
   filters: {
-    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
   },
 };
 
 const validation = validateSubscriptionConfig(config);
 if (validation.valid) {
-  console.log('Configuration ready to use');
+  console.log("Configuration ready to use");
 }
 ```
 
@@ -398,6 +400,7 @@ if (validation.valid) {
 ## Testing
 
 All subscription functions are tested with unit tests covering:
+
 - Event signature parsing (simple, indexed, tuples, arrays)
 - Address validation
 - Chain ID validation

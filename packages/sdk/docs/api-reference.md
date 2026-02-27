@@ -12,7 +12,7 @@ Complete type definitions and API documentation for the @somnia-react/autonomous
 async function deployEventFilterThrottle(config: {
   maxEventsPerWindow: number;
   windowSizeBlocks: number;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -24,7 +24,7 @@ async function deployAutoCompoundHandler(config: {
   compoundToken: string;
   rewardToken: string;
   vaultAddress?: string;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -35,7 +35,7 @@ async function deployAutoCompoundHandler(config: {
 async function deployCronScheduler(config: {
   interval: number;
   lastExecutionTime: number;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -46,7 +46,7 @@ async function deployCronScheduler(config: {
 async function deployLiquidationGuardian(config: {
   minHealthFactor: number;
   alertThreshold: number;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -58,7 +58,7 @@ async function deployCrossCallOrchestrator(config: {
   maxQueueSize: number;
   sourceChain: number;
   destinationChain: number;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -69,7 +69,7 @@ async function deployCrossCallOrchestrator(config: {
 async function deployUpgradeableReactiveProxy(config: {
   implementation: string;
   admin: string;
-}): Promise<DeploymentResult>
+}): Promise<DeploymentResult>;
 ```
 
 ---
@@ -121,7 +121,7 @@ Generate random valid transaction hash.
 ```typescript
 class SubscriptionBuilder {
   constructor(handlerAddress: string);
-  
+
   onEvent(signature: string): this;
   fromChain(chainId: number): this;
   toChain(chainId: number): this;
@@ -141,7 +141,7 @@ class SubscriptionBuilder {
 function createAutoCompoundSubscription(
   handlerAddress: string,
   targetUtilization: number
-): AutoCompoundSubscription
+): AutoCompoundSubscription;
 ```
 
 ---
@@ -156,7 +156,7 @@ function createEventFilterThrottleSubscription(
     maxEventsPerWindow: number;
     windowSizeBlocks: number;
   }
-): EventFilterThrottleSubscription
+): EventFilterThrottleSubscription;
 ```
 
 ---
@@ -168,7 +168,7 @@ function createCronSchedulerSubscription(
   handlerAddress: string,
   interval: number,
   eventSignature?: string
-): CronSchedulerSubscription
+): CronSchedulerSubscription;
 ```
 
 ---
@@ -179,7 +179,7 @@ function createCronSchedulerSubscription(
 function createLiquidationGuardianSubscription(
   handlerAddress: string,
   eventSignature: string
-): LiquidationGuardianSubscription
+): LiquidationGuardianSubscription;
 ```
 
 ---
@@ -191,7 +191,7 @@ function createCrossCallOrchestratorSubscription(
   handlerAddress: string,
   maxQueueSize: number,
   eventSignature?: string
-): CrossCallOrchestratorSubscription
+): CrossCallOrchestratorSubscription;
 ```
 
 ---
@@ -209,8 +209,8 @@ Validate Ethereum address format.
 Validate event signature format (e.g., `EventName(type1,type2)`).
 
 ```typescript
-isValidEventSignature('Transfer(indexed address,indexed address,uint256)');  // true
-isValidEventSignature('Invalid');  // false
+isValidEventSignature("Transfer(indexed address,indexed address,uint256)"); // true
+isValidEventSignature("Invalid"); // false
 ```
 
 ---
@@ -224,12 +224,14 @@ Validate chain ID is in valid range (1-9999).
 #### `validateSubscriptionConfig(config: SubscriptionConfig): ValidationResult`
 
 ```typescript
-function validateSubscriptionConfig(
-  config: SubscriptionConfig
-): { valid: boolean; message?: string }
+function validateSubscriptionConfig(config: SubscriptionConfig): {
+  valid: boolean;
+  message?: string;
+};
 ```
 
 Validates:
+
 - Handler address format
 - Event signature format
 - Chain IDs if present
@@ -365,7 +367,7 @@ class EventDecoder {
 #### `createEventDecoder()`
 
 ```typescript
-function createEventDecoder(): EventDecoder
+function createEventDecoder(): EventDecoder;
 ```
 
 Create new EventDecoder instance.
@@ -441,7 +443,7 @@ interface CrossCallEvent {
   sourceChain: number;
   destinationChain: number;
   messageId: string;
-  status: 'pending' | 'delivered' | 'failed';
+  status: "pending" | "delivered" | "failed";
 }
 ```
 
@@ -474,11 +476,11 @@ interface Log {
 All functions throw standard JavaScript `Error` with descriptive messages:
 
 ```typescript
-new Error('Invalid address')
-new Error('Invalid event signature format')
-new Error('Invalid source chain ID')
-new Error('Invalid target chain ID')
-new Error('Invalid address in filter')
-new Error('Unexpected event type')
-new Error('Invalid log format')
+new Error("Invalid address");
+new Error("Invalid event signature format");
+new Error("Invalid source chain ID");
+new Error("Invalid target chain ID");
+new Error("Invalid address in filter");
+new Error("Unexpected event type");
+new Error("Invalid log format");
 ```

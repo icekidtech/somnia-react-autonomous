@@ -13,7 +13,7 @@ The decoders module provides typed event parsing for all reactive handler event 
 Factory function to create a new event decoder instance.
 
 ```typescript
-import { createEventDecoder } from '@somnia-react/autonomous-sdk/decoders';
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 
 const decoder = createEventDecoder();
 ```
@@ -26,8 +26,8 @@ Register a custom event signature with its topic hash.
 
 ```typescript
 decoder.registerEvent(
-  'CustomEvent(address,uint256)',
-  '0x1234567890123456789012345678901234567890123456789012345678901234'
+  "CustomEvent(address,uint256)",
+  "0x1234567890123456789012345678901234567890123456789012345678901234"
 );
 ```
 
@@ -40,9 +40,9 @@ Parse successful handler execution event.
 ```typescript
 const event = decoder.parseSuccessEvent(log);
 
-console.log(event.handlerAddress);  // '0x...'
-console.log(event.executionTime);   // timestamp
-console.log(event.returnData);       // execution result
+console.log(event.handlerAddress); // '0x...'
+console.log(event.executionTime); // timestamp
+console.log(event.returnData); // execution result
 ```
 
 **Returns:** `SuccessEvent`
@@ -64,9 +64,9 @@ Parse handler execution error event.
 ```typescript
 const event = decoder.parseErrorEvent(log);
 
-console.log(event.handlerAddress);  // '0x...'
-console.log(event.errorMessage);    // error details
-console.log(event.errorCode);       // error type
+console.log(event.handlerAddress); // '0x...'
+console.log(event.errorMessage); // error details
+console.log(event.errorCode); // error type
 ```
 
 **Returns:** `ErrorEvent`
@@ -88,9 +88,9 @@ Parse generic handler execution event.
 ```typescript
 const event = decoder.parseExecutionEvent(log);
 
-console.log(event.executor);        // who ran handler
-console.log(event.gasUsed);         // gas consumed
-console.log(event.success);         // execution result
+console.log(event.executor); // who ran handler
+console.log(event.gasUsed); // gas consumed
+console.log(event.success); // execution result
 ```
 
 **Returns:** `ExecutionEvent`
@@ -112,9 +112,9 @@ Parse event throttle rate-limiting event.
 ```typescript
 const event = decoder.parseThrottleEvent(log);
 
-console.log(event.sourceAddress);     // event source
-console.log(event.eventsProcessed);   // count
-console.log(event.windowTimestamp);   // window start
+console.log(event.sourceAddress); // event source
+console.log(event.eventsProcessed); // count
+console.log(event.windowTimestamp); // window start
 ```
 
 **Returns:** `ThrottleEvent`
@@ -136,9 +136,9 @@ Parse cron scheduler execution event.
 ```typescript
 const event = decoder.parseScheduledExecutionEvent(log);
 
-console.log(event.scheduledTime);     // when it was supposed to run
-console.log(event.actualTime);        // when it actually ran
-console.log(event.delay);             // latency in seconds
+console.log(event.scheduledTime); // when it was supposed to run
+console.log(event.actualTime); // when it actually ran
+console.log(event.delay); // latency in seconds
 ```
 
 **Returns:** `ScheduledExecutionEvent`
@@ -160,10 +160,10 @@ Parse cross-chain message routing event.
 ```typescript
 const event = decoder.parseCrossCallEvent(log);
 
-console.log(event.sourceChain);       // origin chain
-console.log(event.destinationChain);  // target chain
-console.log(event.messageId);         // unique ID
-console.log(event.status);            // delivery status
+console.log(event.sourceChain); // origin chain
+console.log(event.destinationChain); // target chain
+console.log(event.messageId); // unique ID
+console.log(event.status); // delivery status
 ```
 
 **Returns:** `CrossCallEvent`
@@ -173,7 +173,7 @@ interface CrossCallEvent {
   sourceChain: number;
   destinationChain: number;
   messageId: string;
-  status: 'pending' | 'delivered' | 'failed';
+  status: "pending" | "delivered" | "failed";
 }
 ```
 
@@ -184,24 +184,26 @@ interface CrossCallEvent {
 ### Parse All Events from Logs
 
 ```typescript
-import { createEventDecoder } from '@somnia-react/autonomous-sdk/decoders';
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 
 const decoder = createEventDecoder();
-const logs = [/* contract logs */];
+const logs = [
+  /* contract logs */
+];
 
-logs.forEach(log => {
+logs.forEach((log) => {
   const topicHash = log.topics[0];
-  
+
   try {
     if (topicHash === successEventTopic) {
       const event = decoder.parseSuccessEvent(log);
-      console.log('Success:', event);
+      console.log("Success:", event);
     } else if (topicHash === errorEventTopic) {
       const event = decoder.parseErrorEvent(log);
-      console.log('Error:', event);
+      console.log("Error:", event);
     }
   } catch (error) {
-    console.error('Parse error:', error.message);
+    console.error("Parse error:", error.message);
   }
 });
 ```
@@ -212,15 +214,12 @@ logs.forEach(log => {
 const decoder = createEventDecoder();
 
 // Register custom event
-decoder.registerEvent(
-  'VaultCompounded(address,uint256,uint256)',
-  '0xabcd1234...'
-);
+decoder.registerEvent("VaultCompounded(address,uint256,uint256)", "0xabcd1234...");
 
 // Now parse custom events
 const log = {
-  topics: ['0xabcd1234...'],
-  data: '...',
+  topics: ["0xabcd1234..."],
+  data: "...",
 };
 
 // Custom parsing logic would go here
@@ -233,7 +232,7 @@ const decoder = createEventDecoder();
 const logs = receipt.logs; // from transaction receipt
 
 const events = logs
-  .map(log => {
+  .map((log) => {
     try {
       return decoder.parseSuccessEvent(log);
     } catch {
@@ -253,9 +252,9 @@ Handler executed successfully.
 
 ```typescript
 interface SuccessEvent {
-  handlerAddress: string;    // Handler that executed
-  executionTime: number;     // Block timestamp
-  returnData: string;        // Encoded return value
+  handlerAddress: string; // Handler that executed
+  executionTime: number; // Block timestamp
+  returnData: string; // Encoded return value
 }
 ```
 
@@ -269,9 +268,9 @@ Handler execution failed.
 
 ```typescript
 interface ErrorEvent {
-  handlerAddress: string;    // Handler that failed
-  errorMessage: string;      // Human-readable error
-  errorCode: number;         // Error type code
+  handlerAddress: string; // Handler that failed
+  errorMessage: string; // Human-readable error
+  errorCode: number; // Error type code
 }
 ```
 
@@ -285,9 +284,9 @@ Generic execution metadata.
 
 ```typescript
 interface ExecutionEvent {
-  executor: string;          // Who triggered execution
-  gasUsed: number;          // Total gas consumed
-  success: boolean;         // Did it complete
+  executor: string; // Who triggered execution
+  gasUsed: number; // Total gas consumed
+  success: boolean; // Did it complete
 }
 ```
 
@@ -301,9 +300,9 @@ Event rate limiting applied.
 
 ```typescript
 interface ThrottleEvent {
-  sourceAddress: string;     // Event source contract
-  eventsProcessed: number;   // In this window
-  windowTimestamp: number;   // Window start time
+  sourceAddress: string; // Event source contract
+  eventsProcessed: number; // In this window
+  windowTimestamp: number; // Window start time
 }
 ```
 
@@ -317,9 +316,9 @@ Cron scheduler ran task.
 
 ```typescript
 interface ScheduledExecutionEvent {
-  scheduledTime: number;     // Expected execution
-  actualTime: number;        // Real execution
-  delay: number;             // Latency in seconds
+  scheduledTime: number; // Expected execution
+  actualTime: number; // Real execution
+  delay: number; // Latency in seconds
 }
 ```
 
@@ -333,10 +332,10 @@ Cross-chain message event.
 
 ```typescript
 interface CrossCallEvent {
-  sourceChain: number;       // Origin chain ID
-  destinationChain: number;  // Target chain ID
-  messageId: string;         // Unique message ID
-  status: string;            // Current status
+  sourceChain: number; // Origin chain ID
+  destinationChain: number; // Target chain ID
+  messageId: string; // Unique message ID
+  status: string; // Current status
 }
 ```
 
@@ -352,10 +351,10 @@ Parsing throws errors for invalid logs:
 try {
   decoder.parseSuccessEvent(invalidLog);
 } catch (error) {
-  if (error.message === 'Invalid log format') {
-    console.error('Log structure error');
-  } else if (error.message === 'Unexpected event type') {
-    console.error('Topic mismatch');
+  if (error.message === "Invalid log format") {
+    console.error("Log structure error");
+  } else if (error.message === "Unexpected event type") {
+    console.error("Topic mismatch");
   }
 }
 ```
@@ -367,15 +366,15 @@ try {
 ### Monitor Handler Executions
 
 ```typescript
-import { createEventDecoder } from '@somnia-react/autonomous-sdk/decoders';
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 
 const decoder = createEventDecoder();
 
 async function monitorExecutions(txHash: string) {
   const receipt = await provider.getTransactionReceipt(txHash);
-  
+
   const events = receipt.logs
-    .map(log => {
+    .map((log) => {
       try {
         return decoder.parseSuccessEvent(log);
       } catch {
@@ -383,8 +382,8 @@ async function monitorExecutions(txHash: string) {
       }
     })
     .filter(Boolean);
-  
-  events.forEach(event => {
+
+  events.forEach((event) => {
     console.log(`Handler ${event.handlerAddress} executed successfully`);
     console.log(`Execution time: ${new Date(event.executionTime * 1000)}`);
   });
@@ -397,9 +396,9 @@ async function monitorExecutions(txHash: string) {
 async function trackErrors(txHash: string) {
   const receipt = await provider.getTransactionReceipt(txHash);
   const decoder = createEventDecoder();
-  
+
   const errors = receipt.logs
-    .map(log => {
+    .map((log) => {
       try {
         return decoder.parseErrorEvent(log);
       } catch {
@@ -407,8 +406,8 @@ async function trackErrors(txHash: string) {
       }
     })
     .filter(Boolean);
-  
-  errors.forEach(error => {
+
+  errors.forEach((error) => {
     console.error(`Handler failed: ${error.errorMessage}`);
     console.error(`Error code: ${error.errorCode}`);
   });
@@ -421,9 +420,9 @@ async function trackErrors(txHash: string) {
 async function analyzeThrottling(txHash: string) {
   const receipt = await provider.getTransactionReceipt(txHash);
   const decoder = createEventDecoder();
-  
+
   const throttleEvents = receipt.logs
-    .map(log => {
+    .map((log) => {
       try {
         return decoder.parseThrottleEvent(log);
       } catch {
@@ -431,11 +430,9 @@ async function analyzeThrottling(txHash: string) {
       }
     })
     .filter(Boolean);
-  
-  throttleEvents.forEach(event => {
-    console.log(
-      `Throttle window: ${event.eventsProcessed} events processed`
-    );
+
+  throttleEvents.forEach((event) => {
+    console.log(`Throttle window: ${event.eventsProcessed} events processed`);
   });
 }
 ```
@@ -445,6 +442,7 @@ async function analyzeThrottling(txHash: string) {
 ## Testing
 
 All decoder functions are tested with unit tests covering:
+
 - All 6 event types
 - Valid log parsing
 - Invalid log rejection

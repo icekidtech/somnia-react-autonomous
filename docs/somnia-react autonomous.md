@@ -17,7 +17,8 @@ Become the de-facto standard library for writing reactive Solidity handlers on S
 **One-liner**  
 A battle-tested library of Solidity abstract contracts, handler templates, and TypeScript helpers that simplify creation, deployment, and safe execution of **on-chain reactive logic** using Somnia's `SomniaEventHandler` pattern.
 
-**Why it exists**  
+**Why it exists**
+
 - Official `@somnia-chain/reactivity-contracts` provides only the minimal `SomniaEventHandler` abstract contract.
 - Writing `_onEvent` implementations is error-prone: reentrancy risks, gas griefing, complex event decoding, unsafe external calls, lack of throttling/debounce, upgradeability concerns.
 - Most Somnia hackathon/DeFi/gaming projects reinvent the same patterns (auto-compound, liquidation guard, cron-like scheduler, cross-contract orchestrator).
@@ -45,15 +46,15 @@ MIT (to maximize adoption)
 
 #### Solidity Contracts (main value)
 
-| Contract / Abstract | Purpose | Key Methods / Features | Estimated complexity |
-|----------------------|---------|------------------------|----------------------|
-| `BaseReactiveHandler` | Abstract base with common safety | Non-reentrant guard, gas limit check, event emitter for errors/success | ★★ |
-| `AutoCompoundHandler` | Auto-compound yield / rewards | `_onEvent`: check reward token transfer or oracle update → call compound() | ★★★ |
-| `LiquidationGuardian` | Monitor health factor / liquidation threshold | `_onEvent`: price update or borrow event → check & liquidate if needed | ★★★★ |
-| `CronLikeScheduler` | Time-based triggers (approximate cron) | Subscription to block/time events → execute if interval passed | ★★★ |
-| `EventFilterThrottle` | Throttle / debounce noisy events | Internal counter / timestamp → skip if too frequent | ★★ |
-| `CrossCallOrchestrator` | Chain multiple external calls atomically | Queue of actions → execute sequentially in `_onEvent` | ★★★★ |
-| `UpgradeableReactiveProxy` | Optional UUPS / transparent proxy base | For upgradable reactive contracts | ★★★ |
+| Contract / Abstract        | Purpose                                       | Key Methods / Features                                                     | Estimated complexity |
+| -------------------------- | --------------------------------------------- | -------------------------------------------------------------------------- | -------------------- |
+| `BaseReactiveHandler`      | Abstract base with common safety              | Non-reentrant guard, gas limit check, event emitter for errors/success     | ★★                   |
+| `AutoCompoundHandler`      | Auto-compound yield / rewards                 | `_onEvent`: check reward token transfer or oracle update → call compound() | ★★★                  |
+| `LiquidationGuardian`      | Monitor health factor / liquidation threshold | `_onEvent`: price update or borrow event → check & liquidate if needed     | ★★★★                 |
+| `CronLikeScheduler`        | Time-based triggers (approximate cron)        | Subscription to block/time events → execute if interval passed             | ★★★                  |
+| `EventFilterThrottle`      | Throttle / debounce noisy events              | Internal counter / timestamp → skip if too frequent                        | ★★                   |
+| `CrossCallOrchestrator`    | Chain multiple external calls atomically      | Queue of actions → execute sequentially in `_onEvent`                      | ★★★★                 |
+| `UpgradeableReactiveProxy` | Optional UUPS / transparent proxy base        | For upgradable reactive contracts                                          | ★★★                  |
 
 All inherit from `SomniaEventHandler` (`@somnia-chain/reactivity-contracts` dependency).
 
@@ -110,9 +111,9 @@ Community-contributed handlers + basic audit + Somnia ecosystem promotion
 
 ### 9. Risks & Mitigations
 
-| Risk | Mitigation |
-|------|------------|
+| Risk                                   | Mitigation                                                                       |
+| -------------------------------------- | -------------------------------------------------------------------------------- |
 | Somnia on-chain reactivity changes API | Pin to specific `@somnia-chain/reactivity-contracts` version + changelog watcher |
-| Low adoption if mainnet delayed | Focus on testnet-first + hackathon integrations |
-| Security bugs in handlers | Clear warnings, non-upgradeable by default in examples, encourage audits |
-| Name already taken on npm | Use `@somnia-react/autonomous` (or `@somnia/autonomous-handlers` if needed) |
+| Low adoption if mainnet delayed        | Focus on testnet-first + hackathon integrations                                  |
+| Security bugs in handlers              | Clear warnings, non-upgradeable by default in examples, encourage audits         |
+| Name already taken on npm              | Use `@somnia-react/autonomous` (or `@somnia/autonomous-handlers` if needed)      |

@@ -15,12 +15,12 @@ Fixed and verified all GitHub Actions workflows:
 
 ### 2. Workflow Triggers Configured
 
-| Workflow | Trigger | Purpose |
-|----------|---------|---------|
-| **Test** | Push to main/develop, PRs | Run all tests (Solidity, TypeScript, Hardhat) |
-| **Lint** | Push to main/develop, PRs | Code quality checks (Solidity, TypeScript, formatting) |
-| **Coverage** | Push to main/develop, weekly schedule | Generate and upload coverage reports to Codecov |
-| **Publish** | Push of git tags (v*.*.*)  | Publish npm packages and create GitHub releases |
+| Workflow     | Trigger                               | Purpose                                                |
+| ------------ | ------------------------------------- | ------------------------------------------------------ |
+| **Test**     | Push to main/develop, PRs             | Run all tests (Solidity, TypeScript, Hardhat)          |
+| **Lint**     | Push to main/develop, PRs             | Code quality checks (Solidity, TypeScript, formatting) |
+| **Coverage** | Push to main/develop, weekly schedule | Generate and upload coverage reports to Codecov        |
+| **Publish**  | Push of git tags (v*.*.\*)            | Publish npm packages and create GitHub releases        |
 
 ### 3. Documentation Created
 
@@ -52,7 +52,7 @@ main/develop branches:
    └─ Upload to Codecov
 ```
 
-### Release Publishing (on git tag v*.*.*)
+### Release Publishing (on git tag v*.*.\*)
 
 ```
 git tag v0.1.0 → Publish Workflow
@@ -77,12 +77,14 @@ git tag v0.1.0 → Publish Workflow
   - Name: `NPM_TOKEN`, Value: (paste your token)
 
 - [ ] **Step 3:** Verify all tests pass locally
+
   ```bash
   cd /home/icekid/Projects/somnia-react-autonomous
   pnpm test
   ```
 
 - [ ] **Step 4:** Check package version
+
   ```bash
   cat packages/sdk/package.json | grep '"version"'
   # Should show: "version": "0.1.0"
@@ -95,6 +97,7 @@ git tag v0.1.0 → Publish Workflow
 ### Publishing Process (Phase 6.4)
 
 1. **Create and push git tag**
+
    ```bash
    cd /home/icekid/Projects/somnia-react-autonomous
    git tag -a v0.1.0 -m "Release version 0.1.0 - SDK with 88 tests, 85.31% coverage"
@@ -106,6 +109,7 @@ git tag v0.1.0 → Publish Workflow
    - Watch "Publish" workflow execution (should take ~5-10 minutes)
 
 3. **Verify npm package**
+
    ```bash
    npm view @somnia-react/autonomous-sdk
    npm install @somnia-react/autonomous-sdk@0.1.0 --save-dev
@@ -134,24 +138,26 @@ Then after verification, do the official release.
 
 All GitHub Actions workflows are located in `.github/workflows/`:
 
-| File | Lines | Triggers | Jobs |
-|------|-------|----------|------|
-| test.yml | 80 | push, PR | test-solidity, test-typescript, test-hardhat |
-| lint.yml | 67 | push, PR | lint-solidity, lint-typescript, format-check |
-| coverage.yml | 48 | push, schedule | coverage (Solidity + TypeScript) |
-| publish.yml | 65 | tag (v*.*.*) | publish (test + build + npm + docs + release) |
+| File         | Lines | Triggers       | Jobs                                          |
+| ------------ | ----- | -------------- | --------------------------------------------- |
+| test.yml     | 80    | push, PR       | test-solidity, test-typescript, test-hardhat  |
+| lint.yml     | 67    | push, PR       | lint-solidity, lint-typescript, format-check  |
+| coverage.yml | 48    | push, schedule | coverage (Solidity + TypeScript)              |
+| publish.yml  | 65    | tag (v*.*.\*)  | publish (test + build + npm + docs + release) |
 
 ## Test Coverage Metrics
 
 **Current Status:**
+
 - ✅ TypeScript SDK: **88/88 tests passing** (100% pass rate)
 - ✅ Coverage: **85.31%** (v8 provider)
 - ✅ Deployment: 18 tests
-- ✅ Subscriptions: 31 tests  
+- ✅ Subscriptions: 31 tests
 - ✅ Decoders: 18 tests
 - ✅ Integration: 21 tests
 
 **CI/CD Coverage:**
+
 - TypeScript tests run on every push/PR
 - Solidity tests run on every push/PR
 - Full coverage reports generated weekly and on each publish
@@ -174,19 +180,23 @@ All GitHub Actions workflows are located in `.github/workflows/`:
 ### Common Issues & Solutions
 
 **"npm ERR! 401 Unauthorized"**
+
 - Issue: Invalid or missing NPM_TOKEN
 - Fix: Regenerate token and update GitHub secret
 
 **"pnpm not found"**
+
 - Issue: Outdated action version
 - Status: ✅ Already using pnpm/action-setup@v2
 
 **"Type errors in CI but not locally"**
+
 - Issue: Node version mismatch
 - Fix: Ensure running Node 18+ locally
 - Status: ✅ CI uses Node 18
 
 **"Tests pass locally but fail in CI"**
+
 - Issue: Environment differences
 - Debug: Check full workflow logs in Actions tab
 - Status: ✅ All 88 tests passing in both environments

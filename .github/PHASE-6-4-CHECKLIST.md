@@ -16,12 +16,13 @@
 ## 📋 Publishing Checklist (Execute in Order)
 
 ### Step 1: Generate npm Token
+
 **Time: 5 minutes**
 
 ```bash
 # Option A: Using npm.org website (recommended)
 # 1. Visit: https://www.npmjs.com/settings/~token
-# 2. Click "Generate New Token" 
+# 2. Click "Generate New Token"
 # 3. Choose "Granular Access Token"
 # 4. Name: GitHub Actions - somnia-react-autonomous
 # 5. Permissions: write:packages, read:packages
@@ -35,6 +36,7 @@ npm token create --read-only false --access public
 **Result:** You should have a token like `npm_XXXXXXXXXXXXXXXXXXXXXXXXXXXX`
 
 ### Step 2: Add NPM_TOKEN to GitHub Secrets
+
 **Time: 1 minute**
 
 ```bash
@@ -53,6 +55,7 @@ gh secret set NPM_TOKEN -b "your-npm-token-here" \
 **Verification:** You should see `NPM_TOKEN` in your repository secrets
 
 ### Step 3: Verify Repository State
+
 **Time: < 1 minute**
 
 ```bash
@@ -69,6 +72,7 @@ git push origin main
 ```
 
 ### Step 4: Create Release Tag
+
 **Time: < 1 minute**
 
 Execute this command to create the release tag:
@@ -124,6 +128,7 @@ git tag -l -n20 v0.1.0
 **Result:** Tag created locally with detailed release notes
 
 ### Step 5: Push Tag to GitHub
+
 **Time: < 1 minute**
 
 Push the tag to trigger the publish workflow:
@@ -136,11 +141,13 @@ git ls-remote --tags origin | grep v0.1.0
 ```
 
 **What happens next:**
+
 - GitHub detects the v0.1.0 tag
 - Automatically triggers the "Publish" workflow
 - Workflow will: test → build → publish to npm → deploy docs → create release
 
 ### Step 6: Monitor Publish Workflow
+
 **Time: 10-15 minutes**
 
 Go to GitHub Actions and watch the workflow execute:
@@ -148,11 +155,13 @@ Go to GitHub Actions and watch the workflow execute:
 **URL:** https://github.com/icekidtech/somnia-react-autonomous/actions
 
 **Look for:**
+
 1. "Publish" workflow in the list
-2. Status should be 🟡 "In progress" 
+2. Status should be 🟡 "In progress"
 3. Click to see real-time logs
 
 **Expected steps (in order):**
+
 - ✅ Checkout repository
 - ✅ Install Foundry toolchain
 - ✅ Setup pnpm and Node 18
@@ -165,6 +174,7 @@ Go to GitHub Actions and watch the workflow execute:
 - ✅ Create GitHub Release
 
 **Success indicators in logs:**
+
 ```
 ✓ Test Files  4 passed (4)
 ✓ Tests  88 passed (88)
@@ -173,6 +183,7 @@ Go to GitHub Actions and watch the workflow execute:
 ```
 
 ### Step 7: Verify Package on npm
+
 **Time: 2 minutes**
 
 Once workflow completes (should take ~10 minutes), verify the package:
@@ -189,6 +200,7 @@ npm view @somnia-react/autonomous-sdk
 ```
 
 ### Step 8: Test Local Installation
+
 **Time: 3 minutes**
 
 Verify you can install and use the published package:
@@ -209,6 +221,7 @@ node -e "const sdk = require('@somnia-react/autonomous-sdk'); console.log('✓ S
 ```
 
 ### Step 9: Verify GitHub Release
+
 **Time: 1 minute**
 
 Check that GitHub automatically created a release:
@@ -216,6 +229,7 @@ Check that GitHub automatically created a release:
 **URL:** https://github.com/icekidtech/somnia-react-autonomous/releases
 
 **Should contain:**
+
 - ✅ Tag: v0.1.0
 - ✅ Release title (auto-generated)
 - ✅ Release notes (from CHANGELOG.md)
@@ -225,18 +239,18 @@ Check that GitHub automatically created a release:
 
 ## ⏱️ Timeline Summary
 
-| Step | Task | Time | Status |
-|------|------|------|--------|
-| 1 | Generate npm token | 5 min | ⏳ TODO |
-| 2 | Add NPM_TOKEN to secrets | 1 min | ⏳ TODO |
-| 3 | Verify git state | <1 min | ✅ Ready |
-| 4 | Create git tag | <1 min | ⏳ TODO |
-| 5 | Push tag to trigger workflow | <1 min | ⏳ TODO |
-| 6 | Monitor publish workflow | 10 min | ⏳ TODO (automatic) |
-| 7 | Verify npm package | 2 min | ⏳ TODO |
-| 8 | Test installation | 3 min | ⏳ TODO |
-| 9 | Verify GitHub release | 1 min | ⏳ TODO |
-| | **TOTAL** | **~23 min** | |
+| Step | Task                         | Time        | Status              |
+| ---- | ---------------------------- | ----------- | ------------------- |
+| 1    | Generate npm token           | 5 min       | ⏳ TODO             |
+| 2    | Add NPM_TOKEN to secrets     | 1 min       | ⏳ TODO             |
+| 3    | Verify git state             | <1 min      | ✅ Ready            |
+| 4    | Create git tag               | <1 min      | ⏳ TODO             |
+| 5    | Push tag to trigger workflow | <1 min      | ⏳ TODO             |
+| 6    | Monitor publish workflow     | 10 min      | ⏳ TODO (automatic) |
+| 7    | Verify npm package           | 2 min       | ⏳ TODO             |
+| 8    | Test installation            | 3 min       | ⏳ TODO             |
+| 9    | Verify GitHub release        | 1 min       | ⏳ TODO             |
+|      | **TOTAL**                    | **~23 min** |                     |
 
 ---
 
@@ -257,10 +271,13 @@ Check that GitHub automatically created a release:
 ## 🎯 What to Do Right Now
 
 ### Option A: Automated (Recommended)
+
 Follow the 9 steps above in order. The workflow is fully automated.
 
 ### Option B: Quick Commands
+
 If you already have an npm token:
+
 ```bash
 # Add token to GitHub secrets (web UI or CLI)
 # Then execute these commands:
@@ -311,6 +328,7 @@ After successful publishing:
 ## ✨ Current Status
 
 **Pre-Publishing Verification:**
+
 - ✅ SDK: 88/88 tests passing (verified)
 - ✅ Coverage: 85.31% (v8)
 - ✅ Version: 0.1.0

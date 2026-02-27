@@ -28,38 +28,38 @@ pnpm add @somnia-react/autonomous-sdk
 ### Deploy a Handler
 
 ```typescript
-import { deployAutoCompoundHandler } from '@somnia-react/autonomous-sdk/deployment';
+import { deployAutoCompoundHandler } from "@somnia-react/autonomous-sdk/deployment";
 
 const handler = await deployAutoCompoundHandler({
-  compoundToken: '0x1234567890123456789012345678901234567890',
-  rewardToken: '0x0987654321098765432109876543210987654321',
+  compoundToken: "0x1234567890123456789012345678901234567890",
+  rewardToken: "0x0987654321098765432109876543210987654321",
 });
 
-console.log('Handler deployed at:', handler.address);
+console.log("Handler deployed at:", handler.address);
 ```
 
 ### Create a Subscription
 
 ```typescript
-import { createAutoCompoundSubscription } from '@somnia-react/autonomous-sdk/subscriptions';
+import { createAutoCompoundSubscription } from "@somnia-react/autonomous-sdk/subscriptions";
 
 const subscription = createAutoCompoundSubscription(
-  '0x1234567890123456789012345678901234567890',
+  "0x1234567890123456789012345678901234567890",
   150000 // target utilization
 );
 
-console.log('Subscription ID:', subscription.id);
+console.log("Subscription ID:", subscription.id);
 ```
 
 ### Decode Events
 
 ```typescript
-import { createEventDecoder } from '@somnia-react/autonomous-sdk/decoders';
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 
 const decoder = createEventDecoder();
 const event = decoder.parseSuccessEvent(contractLog);
 
-console.log('Event parsed:', event);
+console.log("Event parsed:", event);
 ```
 
 ## 📚 Modules
@@ -69,6 +69,7 @@ console.log('Event parsed:', event);
 Deploy reactive handlers with automatic contract verification and configuration.
 
 **Handlers:**
+
 - `EventFilterThrottle` – Rate-limit event processing
 - `AutoCompound` – Automated vault compounding
 - `CronScheduler` – Time-based execution
@@ -81,6 +82,7 @@ Deploy reactive handlers with automatic contract verification and configuration.
 Create and manage event subscriptions with a fluent, chainable API.
 
 **Features:**
+
 - Fluent builder pattern for complex subscription configs
 - Event signature validation with support for indexed parameters and tuple types
 - Address filtering with validation
@@ -92,6 +94,7 @@ Create and manage event subscriptions with a fluent, chainable API.
 Parse and decode events from handler execution logs.
 
 **Event Types:**
+
 - Success events
 - Error events
 - Execution events
@@ -111,12 +114,12 @@ See [docs/api-reference.md](./docs/api-reference.md) for complete API documentat
 import {
   deployAutoCompoundHandler,
   createAutoCompoundSubscription,
-} from '@somnia-react/autonomous-sdk';
+} from "@somnia-react/autonomous-sdk";
 
 // Deploy the handler
 const handler = await deployAutoCompoundHandler({
-  compoundToken: '0x2260fac5e5542a773aa44fbcff9ffc5ed186a000', // WBTC
-  rewardToken: '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
+  compoundToken: "0x2260fac5e5542a773aa44fbcff9ffc5ed186a000", // WBTC
+  rewardToken: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48", // USDC
 });
 
 // Create a subscription to trigger on RewardAdded events
@@ -132,29 +135,31 @@ console.log(`Subscription: ${subscription.id}`);
 ### Example 2: Build Complex Subscription
 
 ```typescript
-import { SubscriptionBuilder } from '@somnia-react/autonomous-sdk/subscriptions';
+import { SubscriptionBuilder } from "@somnia-react/autonomous-sdk/subscriptions";
 
-const subscription = new SubscriptionBuilder('0x...')
-  .onEvent('SwapExactTokensForTokens(uint256,uint256,address[],address,uint256)')
+const subscription = new SubscriptionBuilder("0x...")
+  .onEvent("SwapExactTokensForTokens(uint256,uint256,address[],address,uint256)")
   .fromChain(1) // Ethereum
   .toChain(42161) // Arbitrum
-  .withAddress(['0xE592427A0AEce92De3Edee1F18E0157C05861564']) // Swap router
+  .withAddress(["0xE592427A0AEce92De3Edee1F18E0157C05861564"]) // Swap router
   .build();
 ```
 
 ### Example 3: Decode Handler Events
 
 ```typescript
-import { createEventDecoder } from '@somnia-react/autonomous-sdk/decoders';
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 
 const decoder = createEventDecoder();
 
 // Parse logs from handler execution
-const logs = [/* contract logs from handler execution */];
+const logs = [
+  /* contract logs from handler execution */
+];
 
 for (const log of logs) {
   const event = decoder.parseSuccessEvent(log);
-  console.log('Success:', event);
+  console.log("Success:", event);
 }
 ```
 
@@ -167,6 +172,7 @@ pnpm build
 ```
 
 Outputs:
+
 - ESM modules: `dist/**/*.mjs`
 - CommonJS modules: `dist/**/*.js`
 - Type declarations: `dist/**/*.d.ts`, `dist/**/*.d.mts`

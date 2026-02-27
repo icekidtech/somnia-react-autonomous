@@ -6,7 +6,7 @@
 YES, YOU'RE READY TO PUBLISH! ✨
 
 ✅ 88/88 tests passing
-✅ 85.31% code coverage  
+✅ 85.31% code coverage
 ✅ All CI/CD configured
 ✅ Documentation complete
 ✅ Package version: 0.1.0
@@ -27,6 +27,7 @@ YES, YOU'RE READY TO PUBLISH! ✨
 **Visit:** https://www.npmjs.com/settings/~token
 
 **Steps:**
+
 1. Click "Generate New Token"
 2. Select "Granular Access Token"
 3. Name: `GitHub Actions - somnia-react`
@@ -35,6 +36,7 @@ YES, YOU'RE READY TO PUBLISH! ✨
 6. **COPY YOUR TOKEN** (you won't see it again!)
 
 **Your token will look like:**
+
 ```
 npm_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ```
@@ -48,6 +50,7 @@ npm_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 **Visit:** https://github.com/icekidtech/somnia-react-autonomous/settings/secrets/actions
 
 **Steps:**
+
 1. Click "New repository secret"
 2. Name: `NPM_TOKEN`
 3. Value: (paste your token)
@@ -82,6 +85,7 @@ git ls-remote --tags origin | grep v0.1.0
 ## ⏱️ What Happens Next (Automatic)
 
 **Timeline:**
+
 ```
 git push origin v0.1.0 (executed by you)
   ↓ (instant)
@@ -106,6 +110,7 @@ Package LIVE on npm ✨
 **Go to:** https://github.com/icekidtech/somnia-react-autonomous/actions
 
 **You should see:**
+
 - "Publish" workflow running (🟡 yellow)
 - Real-time log output
 - Completion in ~10 minutes (✅ green)
@@ -119,6 +124,7 @@ npm view @somnia-react/autonomous-sdk
 ```
 
 Should return:
+
 ```json
 {
   "@somnia-react/autonomous-sdk": "0.1.0",
@@ -155,15 +161,15 @@ After about 15 minutes, verify:
 
 ## 🎓 Key Facts
 
-| Fact | Details |
-|------|---------|
-| **Total time** | ~20 minutes |
-| **Manual steps** | 3 (token gen, add secret, git tag) |
+| Fact                | Details                                   |
+| ------------------- | ----------------------------------------- |
+| **Total time**      | ~20 minutes                               |
+| **Manual steps**    | 3 (token gen, add secret, git tag)        |
 | **Automatic steps** | 5 (test, build, publish, deploy, release) |
-| **Tests run** | 88/88 ✅ |
-| **npm package** | @somnia-react/autonomous-sdk |
-| **Version** | 0.1.0 |
-| **What you get** | Published npm package + GitHub Release |
+| **Tests run**       | 88/88 ✅                                  |
+| **npm package**     | @somnia-react/autonomous-sdk              |
+| **Version**         | 0.1.0                                     |
+| **What you get**    | Published npm package + GitHub Release    |
 
 ---
 
@@ -172,6 +178,7 @@ After about 15 minutes, verify:
 **Most common issue:** npm ERR! 401 Unauthorized
 
 **Fix:** Your npm token is wrong. Check:
+
 1. Token was copied completely (very long string)
 2. Token is in GitHub Secrets as `NPM_TOKEN`
 3. Token has `write:packages` permission
@@ -197,6 +204,7 @@ git push origin v0.1.0
 ```
 
 Then:
+
 - Check: https://github.com/icekidtech/somnia-react-autonomous/actions
 - Wait: ~10 minutes for publish workflow
 - Verify: https://www.npmjs.com/package/@somnia-react/autonomous-sdk
@@ -216,6 +224,7 @@ I've created detailed guides:
 ## ✨ You're Ready!
 
 Everything is prepared. The 3 actions above will:
+
 1. ✅ Generate your npm access token
 2. ✅ Connect it to GitHub
 3. ✅ Trigger automated publishing

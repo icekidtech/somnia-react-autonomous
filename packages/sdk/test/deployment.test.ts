@@ -3,7 +3,7 @@
  * @description Tests for deployment utilities
  */
 
-import { describe, it, expect, beforeEach, vitest } from 'vitest';
+import { describe, it, expect, beforeEach, vitest } from "vitest";
 import {
   deployEventFilterThrottle,
   deployAutoCompoundHandler,
@@ -11,69 +11,65 @@ import {
   deployLiquidationGuardian,
   deployCrossCallOrchestrator,
   deployUpgradeableReactiveProxy,
-} from '../src/deployment/deployer';
-import {
-  isValidAddress,
-  isValidTransactionHash,
-  verifyContract,
-} from '../src/deployment/verify';
+} from "../src/deployment/deployer";
+import { isValidAddress, isValidTransactionHash, verifyContract } from "../src/deployment/verify";
 import type {
   EventFilterThrottleConfig,
   AutoCompoundConfig,
   CronSchedulerConfig,
   LiquidationGuardianConfig,
   CrossCallOrchestratorConfig,
-} from '../src/deployment/types';
+} from "../src/deployment/types";
 
-describe('Deployment Utilities', () => {
+describe("Deployment Utilities", () => {
   let mockSigner: any;
   let mockProvider: any;
 
   beforeEach(() => {
     mockSigner = {
-      getAddress: vitest.fn().mockResolvedValue('0x1234567890123456789012345678901234567890'),
+      getAddress: vitest.fn().mockResolvedValue("0x1234567890123456789012345678901234567890"),
     };
     mockProvider = {};
   });
 
-  describe('Address Validation', () => {
-    it('should validate correct addresses', () => {
-      expect(isValidAddress('0x1234567890123456789012345678901234567890')).toBe(true);
-      expect(isValidAddress('0xABCDEF1234567890ABCDEF1234567890ABCDEF12')).toBe(true);
+  describe("Address Validation", () => {
+    it("should validate correct addresses", () => {
+      expect(isValidAddress("0x1234567890123456789012345678901234567890")).toBe(true);
+      expect(isValidAddress("0xABCDEF1234567890ABCDEF1234567890ABCDEF12")).toBe(true);
     });
 
-    it('should reject invalid addresses', () => {
-      expect(isValidAddress('0xinvalid')).toBe(false);
-      expect(isValidAddress('not-an-address')).toBe(false);
-      expect(isValidAddress('')).toBe(false);
+    it("should reject invalid addresses", () => {
+      expect(isValidAddress("0xinvalid")).toBe(false);
+      expect(isValidAddress("not-an-address")).toBe(false);
+      expect(isValidAddress("")).toBe(false);
     });
 
-    it('should handle case variations', () => {
-      expect(isValidAddress('0xabcdef1234567890abcdef1234567890abcdef12')).toBe(true);
-      expect(isValidAddress('0xABCDEF1234567890ABCDEF1234567890ABCDEF12')).toBe(true);
+    it("should handle case variations", () => {
+      expect(isValidAddress("0xabcdef1234567890abcdef1234567890abcdef12")).toBe(true);
+      expect(isValidAddress("0xABCDEF1234567890ABCDEF1234567890ABCDEF12")).toBe(true);
     });
   });
 
-  describe('Transaction Hash Validation', () => {
-    it('should validate correct hashes', () => {
+  describe("Transaction Hash Validation", () => {
+    it("should validate correct hashes", () => {
       expect(
-        isValidTransactionHash('0x1234567890123456789012345678901234567890123456789012345678901234')
+        isValidTransactionHash("0x1234567890123456789012345678901234567890123456789012345678901234")
       ).toBe(true);
     });
 
-    it('should reject invalid hashes', () => {
-      expect(isValidTransactionHash('0xinvalid')).toBe(false);
-      expect(isValidTransactionHash('not-a-hash')).toBe(false);
-      expect(isValidTransactionHash('0x123')).toBe(false);
+    it("should reject invalid hashes", () => {
+      expect(isValidTransactionHash("0xinvalid")).toBe(false);
+      expect(isValidTransactionHash("not-a-hash")).toBe(false);
+      expect(isValidTransactionHash("0x123")).toBe(false);
     });
   });
 
-  describe('EventFilterThrottle Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("EventFilterThrottle Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config: EventFilterThrottleConfig = {
         maxEventsPerWindow: 100,
         windowSizeBlocks: 50,
-        initialOwner: '0x1234567890123456789012345678901234567890',
+        initialOwner: "0x1234567890123456789012345678901234567890",
       };
 
       const result = await deployEventFilterThrottle(config);
@@ -83,7 +79,7 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should validate config before deployment', async () => {
+    it("should validate config before deployment", async () => {
       const invalidConfig: any = {
         maxEventsPerWindow: -1, // Invalid
         windowSizeBlocks: 50,
@@ -98,13 +94,13 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('AutoCompoundHandler Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("AutoCompoundHandler Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config: AutoCompoundConfig = {
-        vaultAddress: '0x1234567890123456789012345678901234567890',
-        tokenAddress: '0x2345678901234567890123456789012345678901',
-        compoundThreshold: '1000000000000000000', // 1 token
-        initialOwner: '0x3456789012345678901234567890123456789012',
+        vaultAddress: "0x1234567890123456789012345678901234567890",
+        tokenAddress: "0x2345678901234567890123456789012345678901",
+        compoundThreshold: "1000000000000000000", // 1 token
+        initialOwner: "0x3456789012345678901234567890123456789012",
       };
 
       const result = await deployAutoCompoundHandler(config);
@@ -114,11 +110,11 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should validate token and vault addresses', async () => {
+    it("should validate token and vault addresses", async () => {
       const invalidConfig: any = {
-        vaultAddress: 'invalid-address',
-        tokenAddress: 'also-invalid',
-        compoundThreshold: '1000000000000000000',
+        vaultAddress: "invalid-address",
+        tokenAddress: "also-invalid",
+        compoundThreshold: "1000000000000000000",
       };
 
       try {
@@ -129,11 +125,11 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('CronLikeScheduler Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("CronLikeScheduler Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config: CronSchedulerConfig = {
         intervalBlocks: 100,
-        initialOwner: '0x1234567890123456789012345678901234567890',
+        initialOwner: "0x1234567890123456789012345678901234567890",
       };
 
       const result = await deployCronLikeScheduler(config);
@@ -143,11 +139,11 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should accept valid intervals', async () => {
+    it("should accept valid intervals", async () => {
       const configs: CronSchedulerConfig[] = [
-        { intervalBlocks: 1, initialOwner: '0x1234567890123456789012345678901234567890' },
-        { intervalBlocks: 1000, initialOwner: '0x1234567890123456789012345678901234567890' },
-        { intervalBlocks: 100000, initialOwner: '0x1234567890123456789012345678901234567890' },
+        { intervalBlocks: 1, initialOwner: "0x1234567890123456789012345678901234567890" },
+        { intervalBlocks: 1000, initialOwner: "0x1234567890123456789012345678901234567890" },
+        { intervalBlocks: 100000, initialOwner: "0x1234567890123456789012345678901234567890" },
       ];
 
       for (const config of configs) {
@@ -157,13 +153,13 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('LiquidationGuardian Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("LiquidationGuardian Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config: LiquidationGuardianConfig = {
-        oracleAddress: '0x1234567890123456789012345678901234567890',
-        healthFactorThreshold: '1500000000000000000', // 1.5
-        liquidationThreshold: '1200000000000000000', // 1.2
-        initialOwner: '0x2345678901234567890123456789012345678901',
+        oracleAddress: "0x1234567890123456789012345678901234567890",
+        healthFactorThreshold: "1500000000000000000", // 1.5
+        liquidationThreshold: "1200000000000000000", // 1.2
+        initialOwner: "0x2345678901234567890123456789012345678901",
       };
 
       const result = await deployLiquidationGuardian(config);
@@ -173,11 +169,11 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should validate oracle address', async () => {
+    it("should validate oracle address", async () => {
       const invalidConfig: any = {
-        oracleAddress: 'not-an-address',
-        healthFactorThreshold: '1500000000000000000',
-        liquidationThreshold: '1200000000000000000',
+        oracleAddress: "not-an-address",
+        healthFactorThreshold: "1500000000000000000",
+        liquidationThreshold: "1200000000000000000",
       };
 
       try {
@@ -188,12 +184,12 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('CrossCallOrchestrator Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("CrossCallOrchestrator Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config: CrossCallOrchestratorConfig = {
         maxQueueSize: 50,
         maxCallDataSize: 10000,
-        initialOwner: '0x1234567890123456789012345678901234567890',
+        initialOwner: "0x1234567890123456789012345678901234567890",
       };
 
       const result = await deployCrossCallOrchestrator(config);
@@ -203,11 +199,11 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should enforce queue size limits', async () => {
+    it("should enforce queue size limits", async () => {
       const validConfig: CrossCallOrchestratorConfig = {
         maxQueueSize: 100,
         maxCallDataSize: 10000,
-        initialOwner: '0x1234567890123456789012345678901234567890',
+        initialOwner: "0x1234567890123456789012345678901234567890",
       };
 
       const result = await deployCrossCallOrchestrator(validConfig);
@@ -215,12 +211,12 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('UpgradeableReactiveProxy Deployment', () => {
-    it('should deploy with valid config', async () => {
+  describe("UpgradeableReactiveProxy Deployment", () => {
+    it("should deploy with valid config", async () => {
       const config = {
-        implementationAddress: '0x1234567890123456789012345678901234567890',
-        adminAddress: '0x2345678901234567890123456789012345678901',
-        initialOwner: '0x3456789012345678901234567890123456789012',
+        implementationAddress: "0x1234567890123456789012345678901234567890",
+        adminAddress: "0x2345678901234567890123456789012345678901",
+        initialOwner: "0x3456789012345678901234567890123456789012",
       };
 
       const result = await deployUpgradeableReactiveProxy(config);
@@ -230,11 +226,11 @@ describe('Deployment Utilities', () => {
       expect(isValidAddress(result.address)).toBe(true);
     });
 
-    it('should validate admin address', async () => {
+    it("should validate admin address", async () => {
       const invalidConfig: any = {
-        implementationAddress: '0x1234567890123456789012345678901234567890',
-        adminAddress: 'invalid',
-        initialOwner: '0x3456789012345678901234567890123456789012',
+        implementationAddress: "0x1234567890123456789012345678901234567890",
+        adminAddress: "invalid",
+        initialOwner: "0x3456789012345678901234567890123456789012",
       };
 
       try {
@@ -245,12 +241,12 @@ describe('Deployment Utilities', () => {
     });
   });
 
-  describe('Contract Verification', () => {
-    it('should mark deployments as verified', async () => {
+  describe("Contract Verification", () => {
+    it("should mark deployments as verified", async () => {
       const config: EventFilterThrottleConfig = {
         maxEventsPerWindow: 100,
         windowSizeBlocks: 50,
-        initialOwner: '0x1234567890123456789012345678901234567890',
+        initialOwner: "0x1234567890123456789012345678901234567890",
       };
 
       const result = await deployEventFilterThrottle(config);

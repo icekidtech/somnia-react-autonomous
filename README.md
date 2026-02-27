@@ -45,7 +45,7 @@ contract MyAutoCompoundVault is AutoCompoundHandler {
     ) {
         // Initialize with your parameters
     }
-    
+
     function compound() external override {
         // Your auto-compound logic
     }
@@ -77,15 +77,15 @@ console.log("Deployed & subscribed:", handler.address);
 
 ## Handlers (MVP)
 
-| Handler | Purpose | Use Case |
-|---------|---------|----------|
-| `BaseReactiveHandler` | Foundation with safety | Inherit for custom handlers |
-| `AutoCompoundHandler` | Auto-compound rewards | Yield farming vaults |
-| `LiquidationGuardian` | Monitor & liquidate | Lending protocols |
-| `CronLikeScheduler` | Time-based triggers | Scheduled execution |
-| `EventFilterThrottle` | Debounce events | Noisy on-chain streams |
-| `CrossCallOrchestrator` | Chain calls atomically | Multi-step automation |
-| `UpgradeableReactiveProxy` | UUPS upgradeable base | Future-proof contracts |
+| Handler                    | Purpose                | Use Case                    |
+| -------------------------- | ---------------------- | --------------------------- |
+| `BaseReactiveHandler`      | Foundation with safety | Inherit for custom handlers |
+| `AutoCompoundHandler`      | Auto-compound rewards  | Yield farming vaults        |
+| `LiquidationGuardian`      | Monitor & liquidate    | Lending protocols           |
+| `CronLikeScheduler`        | Time-based triggers    | Scheduled execution         |
+| `EventFilterThrottle`      | Debounce events        | Noisy on-chain streams      |
+| `CrossCallOrchestrator`    | Chain calls atomically | Multi-step automation       |
+| `UpgradeableReactiveProxy` | UUPS upgradeable base  | Future-proof contracts      |
 
 ## Documentation
 
@@ -139,12 +139,14 @@ pnpm format
 ### Test Coverage
 
 **SDK Tests: 88/88 passing** ✅
+
 - 31 subscription tests (fluent API, validators, factory functions)
 - 21 integration tests (end-to-end workflows, cross-module testing)
 - 18 event decoder tests (all event type parsing)
 - 18 deployment tests (all handler deployment functions)
 
 **Code Coverage**
+
 ```
 All files:      85.31% statements | 66.66% branches | 93.87% functions
 Decoders:       95.94% statements | 59.25% branches | 100% functions
@@ -153,6 +155,7 @@ Deployment:     71.39% statements | 47.16% branches | 84.61% functions
 ```
 
 **Solidity Tests: 30+ Foundry tests** ✅
+
 - BaseReactiveHandler tests
 - Handler implementation tests
 - Integration tests
