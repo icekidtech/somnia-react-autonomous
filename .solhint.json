@@ -9,7 +9,6 @@
     "not-rely-on-block-hash": "error",
     "not-rely-on-time": "warn",
     "reentrancy": "error",
-    "mark-callable-contracts": "error",
     "state-visibility": "error"
   }
 }
