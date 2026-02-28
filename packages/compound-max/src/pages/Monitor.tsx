@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Settings, Play, Pause, Zap } from "lucide-react";
+import { ArrowLeft, Settings, Play, Pause, Zap, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useHandlers } from "@/hooks/use-handlers";
 import { useToast } from "@/hooks/use-toast";
+import { useHandlerContract } from "@/hooks/use-handler-contract";
 import { MetricsCards } from "@/components/monitor/MetricsCards";
 import { RewardAccumulation } from "@/components/monitor/RewardAccumulation";
 import { CompoundChart } from "@/components/monitor/CompoundChart";
@@ -16,8 +17,10 @@ export default function Monitor() {
   const { handlers, updateHandler, removeHandler } = useHandlers();
   const { toast } = useToast();
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [isCompounding, setIsCompounding] = useState(false);
 
   const handler = handlers.find((h) => h.address === address);
+  const { state: contractState, manualCompound } = useHandlerContract(handler?.address || "");
 
   // Auto-refresh every 15 seconds
   const [, setTick] = useState(0);
@@ -44,6 +47,36 @@ export default function Monitor() {
     toast({ title: isPaused ? "Handler resumed" : "Handler paused" });
   };
 
+  const handleManualCompound = async () => {
+    if (!contractState.shouldCompound) {
+      toast({
+        title: "Cannot compound now",
+        description: "Accumulated rewards are below the threshold",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsCompounding(true);
+    try {
+      const result = await manualCompound();
+      if (result) {
+        toast({
+          title: "Manual compound executed",
+          description: `Transaction: ${result.transactionHash?.slice(0, 10)}...`,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error triggering compound",
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        variant: "destructive",
+      });
+    } finally {
+      setIsCompounding(false);
+    }
+  };
+
   return (
     <div className="container py-8 space-y-6 max-w-5xl">
       {/* Header */}
@@ -67,9 +100,18 @@ export default function Monitor() {
             variant="outline"
             size="sm"
             className="gap-1.5"
-            onClick={() => toast({ title: "Manual compound triggered" })}
+            onClick={handleManualCompound}
+            disabled={isCompounding || !contractState.shouldCompound}
           >
-            <Zap className="h-3.5 w-3.5" /> Manual Trigger
+            {isCompounding ? (
+              <>
+                <Loader2 className="h-3.5 w-3.5 animate-spin" /> Compounding...
+              </>
+            ) : (
+              <>
+                <Zap className="h-3.5 w-3.5" /> Manual Trigger
+              </>
+            )}
           </Button>
           <Button
             variant={isPaused ? "default" : "outline"}
@@ -86,7 +128,7 @@ export default function Monitor() {
       <MetricsCards handler={handler} />
       <RewardAccumulation handler={handler} />
       <CompoundChart />
-      <EventLog />
+      <EventLog handler={handler} />
 
       <SettingsModal
         open={settingsOpen}

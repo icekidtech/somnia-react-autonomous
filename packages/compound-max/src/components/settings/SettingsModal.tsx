@@ -25,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Check, Loader2, Plus, Trash2, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useHandlerContract } from "@/hooks/use-handler-contract";
 import type { Handler } from "@/hooks/use-handlers";
 
 interface SettingsModalProps {
@@ -37,6 +38,8 @@ interface SettingsModalProps {
 
 export function SettingsModal({ open, onOpenChange, handler, onUpdate, onDelete }: SettingsModalProps) {
   const { toast } = useToast();
+  const { updateConfig, transferOwnership } = useHandlerContract(handler.address);
+  
   const [name, setName] = useState(handler.name);
   const [autoCompound, setAutoCompound] = useState(handler.status === "active");
   const [threshold, setThreshold] = useState(handler.threshold);
@@ -51,21 +54,38 @@ export function SettingsModal({ open, onOpenChange, handler, onUpdate, onDelete 
 
   // Ownership
   const [newOwner, setNewOwner] = useState("");
+  const [transferring, setTransferring] = useState(false);
 
   const isValidAddress = (addr: string) => /^0x[a-fA-F0-9]{40}$/.test(addr);
 
   const handleSaveBasic = async () => {
     setSaving(true);
-    await new Promise((r) => setTimeout(r, 800));
-    onUpdate(handler.address, {
-      name,
-      threshold,
-      status: autoCompound ? "active" : "paused",
-    });
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
-    toast({ title: "Settings saved" });
+    try {
+      // Call smart contract to update threshold configuration
+      await updateConfig({
+        vault: handler.vaultAddress,
+        minAmount: threshold.toString(),
+      });
+      
+      // Update local state
+      onUpdate(handler.address, {
+        name,
+        threshold,
+        status: autoCompound ? "active" : "paused",
+      });
+      
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+      toast({ title: "Settings saved", description: "Handler configuration updated on-chain" });
+    } catch (error) {
+      toast({ 
+        title: "Error saving settings", 
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        variant: "destructive"
+      });
+    } finally {
+      setSaving(false);
+    }
   };
 
   const addExecutor = () => {
@@ -77,8 +97,24 @@ export function SettingsModal({ open, onOpenChange, handler, onUpdate, onDelete 
 
   const handleTransfer = async () => {
     if (!isValidAddress(newOwner)) return;
-    toast({ title: "Ownership transferred", description: `New owner: ${newOwner.slice(0, 10)}...` });
-    setNewOwner("");
+    setTransferring(true);
+    try {
+      await transferOwnership(newOwner);
+      toast({ 
+        title: "Ownership transferred", 
+        description: `New owner: ${newOwner.slice(0, 10)}...`,
+      });
+      setNewOwner("");
+      onOpenChange(false);
+    } catch (error) {
+      toast({ 
+        title: "Error transferring ownership", 
+        description: error instanceof Error ? error.message : "Unknown error occurred",
+        variant: "destructive"
+      });
+    } finally {
+      setTransferring(false);
+    }
   };
 
   const handleDelete = () => {
@@ -242,8 +278,8 @@ export function SettingsModal({ open, onOpenChange, handler, onUpdate, onDelete 
               />
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="outline" className="w-full gap-2" disabled={!isValidAddress(newOwner)}>
-                    <AlertTriangle className="h-4 w-4" /> Transfer Ownership
+                  <Button variant="outline" className="w-full gap-2" disabled={!isValidAddress(newOwner) || transferring}>
+                    <AlertTriangle className="h-4 w-4" /> {transferring ? "Transferring..." : "Transfer Ownership"}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -257,7 +293,9 @@ export function SettingsModal({ open, onOpenChange, handler, onUpdate, onDelete 
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleTransfer}>Transfer</AlertDialogAction>
+                    <AlertDialogAction onClick={handleTransfer} disabled={transferring}>
+                      {transferring ? "Transferring..." : "Transfer"}
+                    </AlertDialogAction>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>

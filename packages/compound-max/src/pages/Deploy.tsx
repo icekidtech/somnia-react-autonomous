@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useToast } from "@/hooks/use-toast";
 import { useHandlers } from "@/hooks/use-handlers";
+import { useHandlerDeploy } from "@/hooks/use-handler-deploy";
 
 const COMMON_TOKENS = [
   { symbol: "USDC", address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48" },
@@ -38,6 +39,7 @@ export default function Deploy() {
   const { address, isConnected } = useAccount();
   const { toast } = useToast();
   const { addHandler } = useHandlers();
+  const { deploy, state: deploymentState, reset: resetDeployment } = useHandlerDeploy();
 
   const [name, setName] = useState("");
   const [vaultAddress, setVaultAddress] = useState("");
@@ -46,7 +48,6 @@ export default function Deploy() {
   const [customCompound, setCustomCompound] = useState("");
   const [customReward, setCustomReward] = useState("");
   const [threshold, setThreshold] = useState(100);
-  const [deploying, setDeploying] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
 
   const selectedCompound = compoundToken === "custom" ? customCompound : compoundToken;
@@ -66,31 +67,50 @@ export default function Deploy() {
       toast({ title: "Connect your wallet first", variant: "destructive" });
       return;
     }
-    setDeploying(true);
-    try {
-      // Simulate SDK call: deployAutoCompoundHandler(vaultAddress, selectedReward, threshold, address)
-      await new Promise((r) => setTimeout(r, 2000));
-      const handlerAddress = `0x${Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join("")}`;
 
-      addHandler({
-        address: handlerAddress,
-        name,
+    try {
+      // Call SDK deployment via hook
+      const result = await deploy({
+        handlerName: name,
         vaultAddress,
-        compoundToken: selectedCompound,
-        rewardToken: selectedReward,
-        threshold,
-        network: "ethereum",
-        status: "active",
-        deployedAt: Date.now(),
-        stats: { totalCompounds: 0, grossYield: 0, feesPaid: 0, netYield: 0, lastCompound: null },
+        rewardTokenAddress: selectedReward,
+        compoundTokenAddress: selectedCompound,
+        thresholdUsd: threshold,
       });
 
-      toast({ title: "Handler deployed successfully!" });
-      navigate(`/monitor/${handlerAddress}`);
-    } catch {
-      toast({ title: "Deployment failed", description: "Please try again.", variant: "destructive" });
-    } finally {
-      setDeploying(false);
+      if (result && result.address) {
+        // Save to localStorage
+        addHandler({
+          address: result.address,
+          name,
+          vaultAddress,
+          compoundToken: selectedCompound,
+          rewardToken: selectedReward,
+          threshold,
+          network: "ethereum",
+          status: "active",
+          deployedAt: Date.now(),
+          stats: { totalCompounds: 0, grossYield: 0, feesPaid: 0, netYield: 0, lastCompound: null },
+        });
+
+        toast({
+          title: "Handler deployed successfully!",
+          description: `Address: ${result.address.slice(0, 10)}...`,
+        });
+        navigate(`/monitor/${result.address}`);
+      } else {
+        toast({
+          title: "Deployment failed",
+          description: deploymentState.error || "Unknown error",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Deployment error",
+        description: error instanceof Error ? error.message : "Please try again",
+        variant: "destructive",
+      });
     }
   };
 
@@ -281,15 +301,15 @@ export default function Deploy() {
           </Card>
 
           <div className="flex gap-3">
-            <Button variant="outline" onClick={() => setStep(1)} className="flex-1" disabled={deploying}>
+            <Button variant="outline" onClick={() => setStep(1)} className="flex-1" disabled={deploymentState.isLoading}>
               Back
             </Button>
             <Button
               onClick={handleDeploy}
-              disabled={deploying || !isConnected}
+              disabled={deploymentState.isLoading || !isConnected}
               className="flex-1 gap-2 glow-primary"
             >
-              {deploying ? (
+              {deploymentState.isLoading ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Deploying...
@@ -304,6 +324,9 @@ export default function Deploy() {
           </div>
           {!isConnected && (
             <p className="text-xs text-center text-warning">Connect your wallet to deploy.</p>
+          )}
+          {deploymentState.error && (
+            <p className="text-xs text-center text-destructive">Error: {deploymentState.error}</p>
           )}
         </div>
       )}

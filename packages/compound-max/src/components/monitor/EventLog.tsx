@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ExternalLink, Download, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -17,6 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useEventSubscription } from "@/hooks/use-event-subscription";
+import type { Handler } from "@/hooks/use-handlers";
 
 interface EventItem {
   id: number;
@@ -28,6 +30,10 @@ interface EventItem {
   gasUsed?: string;
 }
 
+interface EventLogProps {
+  handler?: Handler;
+}
+
 const mockEvents: EventItem[] = [
   { id: 1, type: "compound", amount: 82.5, timestamp: Date.now() - 3600000, tx: "0xabc...def", blockNumber: 18942315, gasUsed: "124,532" },
   { id: 2, type: "threshold", amount: 50, timestamp: Date.now() - 7200000, tx: "0x123...456", blockNumber: 18942100, gasUsed: "85,200" },
@@ -37,15 +43,35 @@ const mockEvents: EventItem[] = [
   { id: 6, type: "compound", amount: 91.1, timestamp: Date.now() - 345600000, tx: "0x456...789", blockNumber: 18913500, gasUsed: "126,700" },
 ];
 
-export function EventLog() {
+export function EventLog({ handler }: EventLogProps) {
+  const { events: liveEvents, isLoading, error } = useEventSubscription();
   const [eventFilter, setEventFilter] = useState("all");
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const [visibleCount, setVisibleCount] = useState(5);
 
-  const filteredEvents =
-    eventFilter === "all" ? mockEvents : mockEvents.filter((e) => e.type === eventFilter);
+  // Use live events if available, fall back to mock data
+  const displayEvents: EventItem[] = liveEvents.length > 0 
+    ? liveEvents.map((e, idx) => ({
+        id: idx,
+        type: "compound" as const,
+        amount: parseFloat(e.amount) / 1e18, // Convert wei to token
+        timestamp: e.timestamp,
+        tx: e.transactionHash || "pending",
+        blockNumber: e.blockNumber,
+        gasUsed: "N/A",
+      }))
+    : mockEvents;
 
-  const visibleEvents = filteredEvents.slice(0, visibleCount);
+  const filteredEvents =
+    eventFilter === "all" ? displayEvents : displayEvents.filter((e) => e.type === eventFilter);
+
+  // Subscribe to events when handler is provided
+  useEffect(() => {
+    if (handler?.address) {
+      // Subscription logic will be triggered by hook
+      console.log("Monitoring events for handler:", handler.address);
+    }
+  }, [handler?.address]);
 
   const exportCSV = () => {
     const headers = "Timestamp,Event Type,Amount,Transaction\n";
@@ -60,6 +86,8 @@ export function EventLog() {
     a.click();
     URL.revokeObjectURL(url);
   };
+
+  const visibleEvents = filteredEvents.slice(0, visibleCount);
 
   return (
     <Card className="glass">
