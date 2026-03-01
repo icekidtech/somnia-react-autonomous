@@ -1,6 +1,6 @@
 {
   "name": "@somnia-react/autonomous-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript SDK for deploying and managing Somnia reactive handlers",
   "license": "MIT",
   "author": "Icekid",
