@@ -23,6 +23,49 @@ Or with pnpm:
 pnpm add @somnia-react/autonomous-sdk
 ```
 
+Or with yarn:
+
+```bash
+yarn add @somnia-react/autonomous-sdk
+```
+
+## 📥 Imports & Subpath Exports
+
+The SDK provides multiple entry points for modular imports:
+
+### Main Export (Everything)
+
+```typescript
+import {
+  deployAutoCompoundHandler,
+  createAutoCompoundSubscription,
+  createEventDecoder,
+} from "@somnia-react/autonomous-sdk";
+```
+
+### Deployment Module
+
+```typescript
+import { deployAutoCompoundHandler } from "@somnia-react/autonomous-sdk/deployment";
+```
+
+### Subscriptions Module
+
+```typescript
+import { createAutoCompoundSubscription } from "@somnia-react/autonomous-sdk/subscriptions";
+```
+
+### Decoders Module
+
+```typescript
+import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
+```
+
+**Benefits of subpath imports:**
+- Tree-shakeable for smaller bundle sizes
+- Logical organization of functionality
+- Clear API boundaries
+
 ## 🎯 Quick Start
 
 ### Deploy a Handler
