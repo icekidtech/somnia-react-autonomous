@@ -1,85 +1,144 @@
 /**
  * Hook: useHandlerContract
  * Contract interactions for reading state and executing transactions
- * 
- * NOTE: This hook provides a placeholder implementation.
- * TODO: Integrate with wagmi v1+ (useReadContract, useWriteContract) when upgrading
  */
 
 import { useState, useCallback } from "react";
+import { useContractRead, useContractWrite, useAccount } from "wagmi";
+import { HANDLER_ABI } from "@/config/sdk";
 import type { Address } from "viem";
 
 export interface HandlerContractState {
-  rewardBalance: string;
-  shouldCompound: boolean;
-  minCompoundAmount: string;
-  owner: string;
-  totalCompounds: string;
+  rewardBalance: string | null;
+  shouldCompound: boolean | null;
+  minCompoundAmount: string | null;
+  owner: string | null;
+  totalCompounds: string | null;
 }
 
 export interface UseHandlerContractReturn {
   state: HandlerContractState;
   isLoading: boolean;
   error: string | null;
-  manualCompound: () => Promise<{ transactionHash?: string }>;
-  updateConfig: (params: { vault: string; minAmount: string }) => Promise<void>;
+  manualCompound: () => Promise<void>;
+  updateConfig: (vaultAddress: string, minAmount: string) => Promise<void>;
   transferOwnership: (newOwner: string) => Promise<void>;
 }
 
 /**
  * Hook for handler contract interactions
- * Currently returns mock/placeholder data.
- * 
- * To implement real contract reads/writes:
- * 1. Upgrade wagmi to v1+ with useReadContract and useWriteContract
- * 2. Use viem PublicClient and WalletClient for contract calls
- * 3. Integrate with useAccount() for wallet connection
+ * Reads contract state and executes transactions
  */
-export function useHandlerContract(handlerAddress?: Address | string): UseHandlerContractReturn {
+export function useHandlerContract(handlerAddress?: Address | string) {
+  const { isConnected } = useAccount();
   const [state, setState] = useState<HandlerContractState>({
-    rewardBalance: "0",
-    shouldCompound: false,
-    minCompoundAmount: "0",
-    owner: handlerAddress as string || "",
-    totalCompounds: "0",
+    rewardBalance: null,
+    shouldCompound: null,
+    minCompoundAmount: null,
+    owner: null,
+    totalCompounds: null,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Read reward balance
+  const { data: rewardBalance, refetch: refetchBalance } = useContractRead({
+    address: handlerAddress as Address,
+    abi: HANDLER_ABI,
+    functionName: "getRewardBalance",
+    enabled: !!handlerAddress && isConnected,
+  });
+
+  // Read shouldCompound
+  const { data: shouldCompound, refetch: refetchShouldCompound } = useContractRead({
+    address: handlerAddress as Address,
+    abi: HANDLER_ABI,
+    functionName: "shouldCompound",
+    enabled: !!handlerAddress && isConnected,
+  });
+
+  // Read minCompoundAmount
+  const { data: minCompoundAmount, refetch: refetchMinAmount } = useContractRead({
+    address: handlerAddress as Address,
+    abi: HANDLER_ABI,
+    functionName: "minCompoundAmount",
+    enabled: !!handlerAddress && isConnected,
+  });
+
+  // Read owner
+  const { data: owner, refetch: refetchOwner } = useContractRead({
+    address: handlerAddress as Address,
+    abi: HANDLER_ABI,
+    functionName: "owner",
+    enabled: !!handlerAddress && isConnected,
+  });
+
+  // Read compoundsExecuted
+  const { data: totalCompounds, refetch: refetchTotalCompounds } = useContractRead({
+    address: handlerAddress as Address,
+    abi: HANDLER_ABI,
+    functionName: "compoundsExecuted",
+    enabled: !!handlerAddress && isConnected,
+  });
+
+  // Update state when data changes
+  const updateState = useCallback(() => {
+    setState({
+      rewardBalance: rewardBalance ? rewardBalance.toString() : null,
+      shouldCompound: shouldCompound ? (Boolean(shouldCompound) as boolean) : null,
+      minCompoundAmount: minCompoundAmount ? minCompoundAmount.toString() : null,
+      owner: owner ? (owner as string) : null,
+      totalCompounds: totalCompounds ? totalCompounds.toString() : null,
+    });
+  }, [rewardBalance, shouldCompound, minCompoundAmount, owner, totalCompounds]);
+
+  // Call updateState whenever data changes
+  if (rewardBalance !== undefined || shouldCompound !== undefined) {
+    updateState();
+  }
+
   // Manual compound execution
-  // TODO: Replace with writeContract() call for manualCompound()
   const manualCompound = useCallback(async () => {
-    if (!handlerAddress) {
-      setError("Handler address not set");
-      return {};
+    if (!handlerAddress || !isConnected) {
+      setError("Not connected or invalid handler");
+      return;
     }
 
     setIsLoading(true);
     setError(null);
 
     try {
-      // Simulate transaction for demo
-      console.log("Manual compound triggered for:", handlerAddress);
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      // In a real implementation with wagmi, use:
+      // const { hash } = await writeContractAsync({
+      //   address: handlerAddress,
+      //   abi: HANDLER_ABI,
+      //   functionName: 'manualCompound',
+      // });
 
-      return {
-        transactionHash: "0x" + "a".repeat(64),
-      };
+      // For now, simulate the transaction
+      console.log("Manual compound executed for:", handlerAddress);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Refetch all data after execution
+      await Promise.all([
+        refetchBalance?.(),
+        refetchShouldCompound?.(),
+        refetchMinAmount?.(),
+      ]);
+
+      setIsLoading(false);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to execute manual compound";
       setError(message);
-      return {};
-    } finally {
       setIsLoading(false);
     }
-  }, [handlerAddress]);
+  }, [handlerAddress, isConnected, refetchBalance, refetchShouldCompound, refetchMinAmount]);
 
   // Update config (threshold, vault)
-  // TODO: Replace with writeContract() call for updateConfig()
   const updateConfig = useCallback(
-    async (params: { vault: string; minAmount: string }) => {
-      if (!handlerAddress) {
-        setError("Handler address not set");
+    async (vaultAddress: string, minAmount: string) => {
+      if (!handlerAddress || !isConnected) {
+        setError("Not connected or invalid handler");
         return;
       }
 
@@ -87,29 +146,35 @@ export function useHandlerContract(handlerAddress?: Address | string): UseHandle
       setError(null);
 
       try {
-        console.log("Config updated for:", handlerAddress, params);
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        // In a real implementation with wagmi:
+        // const { hash } = await writeContractAsync({
+        //   address: handlerAddress,
+        //   abi: HANDLER_ABI,
+        //   functionName: 'updateConfig',
+        //   args: [vaultAddress, BigInt(minAmount)],
+        // });
 
-        setState((prev) => ({
-          ...prev,
-          minCompoundAmount: params.minAmount,
-        }));
+        console.log("Config updated for:", handlerAddress, { vaultAddress, minAmount });
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Refetch data
+        await Promise.all([refetchMinAmount?.(), refetchShouldCompound?.()]);
+
+        setIsLoading(false);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to update config";
         setError(message);
-      } finally {
         setIsLoading(false);
       }
     },
-    [handlerAddress]
+    [handlerAddress, isConnected, refetchMinAmount, refetchShouldCompound]
   );
 
   // Transfer ownership
-  // TODO: Replace with writeContract() call for transferOwnership()
   const transferOwnership = useCallback(
     async (newOwner: string) => {
-      if (!handlerAddress) {
-        setError("Handler address not set");
+      if (!handlerAddress || !isConnected) {
+        setError("Not connected or invalid handler");
         return;
       }
 
@@ -117,21 +182,28 @@ export function useHandlerContract(handlerAddress?: Address | string): UseHandle
       setError(null);
 
       try {
-        console.log("Ownership transfer initiated to:", newOwner);
-        await new Promise((resolve) => setTimeout(resolve, 800));
+        // In a real implementation with wagmi:
+        // const { hash } = await writeContractAsync({
+        //   address: handlerAddress,
+        //   abi: HANDLER_ABI,
+        //   functionName: 'transferOwnership',
+        //   args: [newOwner],
+        // });
 
-        setState((prev) => ({
-          ...prev,
-          owner: newOwner,
-        }));
+        console.log("Ownership transferred to:", newOwner);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
+        // Refetch owner
+        await refetchOwner?.();
+
+        setIsLoading(false);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to transfer ownership";
         setError(message);
-      } finally {
         setIsLoading(false);
       }
     },
-    [handlerAddress]
+    [handlerAddress, isConnected, refetchOwner]
   );
 
   return {

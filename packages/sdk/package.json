@@ -24,28 +24,23 @@
     "typescript"
   ],
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
+      "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
     },
     "./deployment": {
-      "import": "./dist/deployment.mjs",
-      "require": "./dist/deployment.js",
-      "types": "./dist/deployment.d.ts"
+      "import": "./dist/deployment/index.js",
+      "types": "./dist/deployment/index.d.ts"
     },
     "./subscriptions": {
-      "import": "./dist/subscriptions.mjs",
-      "require": "./dist/subscriptions.js",
-      "types": "./dist/subscriptions.d.ts"
+      "import": "./dist/subscriptions/index.js",
+      "types": "./dist/subscriptions/index.d.ts"
     },
     "./decoders": {
-      "import": "./dist/decoders.mjs",
-      "require": "./dist/decoders.js",
-      "types": "./dist/decoders.d.ts"
+      "import": "./dist/decoders/index.js",
+      "types": "./dist/decoders/index.d.ts"
     }
   },
   "files": [
