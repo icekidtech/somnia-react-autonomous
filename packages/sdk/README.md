@@ -62,6 +62,7 @@ import { createEventDecoder } from "@somnia-react/autonomous-sdk/decoders";
 ```
 
 **Benefits of subpath imports:**
+
 - Tree-shakeable for smaller bundle sizes
 - Logical organization of functionality
 - Clear API boundaries
