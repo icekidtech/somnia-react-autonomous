@@ -40,14 +40,14 @@ jobs:
         run: forge test --via-ir
 
       - name: Run SDK tests
-        run: pnpm --filter sdk test
+        run: pnpm --filter @somnia-react/autonomous-sdk test
 
       - name: Build Solidity contracts
         working-directory: packages/contracts
         run: forge build && pnpm exec hardhat compile && echo 'Build complete'
 
       - name: Build SDK
-        run: pnpm --filter sdk build
+        run: pnpm --filter @somnia-react/autonomous-sdk build
 
       - name: Build docs
         run: pnpm docs:build
@@ -55,7 +55,7 @@ jobs:
       - name: Publish SDK to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm --filter sdk publish --no-git-checks --access public
+        run: pnpm --filter @somnia-react/autonomous-sdk publish --no-git-checks --access public
 
       - name: Deploy docs to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
