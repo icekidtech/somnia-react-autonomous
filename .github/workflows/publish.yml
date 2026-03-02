@@ -52,6 +52,11 @@ jobs:
       - name: Build docs
         run: pnpm docs:build
 
+      - name: Publish Contracts to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm --filter @somnia-react/autonomous-contracts publish --no-git-checks --access public
+
       - name: Publish SDK to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

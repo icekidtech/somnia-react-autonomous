@@ -1,6 +1,6 @@
 {
   "name": "@somnia-react/autonomous-contracts",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Solidity smart contracts for Somnia on-chain reactive logic",
   "license": "MIT",
   "files": [
